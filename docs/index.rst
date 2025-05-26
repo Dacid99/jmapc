@@ -96,13 +96,6 @@ Documentation Contents
    api/methods
    api/models
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Development
-
-   contributing
-   changelog
-
 Indices and tables
 ==================
 
