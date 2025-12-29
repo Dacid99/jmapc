@@ -134,6 +134,14 @@ class Client:
             raise Exception("No primary account ID found")
         return primary_account_id
 
+    @property
+    def timeout(self) -> int:
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, new_timeout: int) -> None:
+        self._timeout = new_timeout if new_timeout else REQUEST_TIMEOUT
+
     def upload_blob(self, file_name: Union[str, Path]) -> Blob:
         mime_type, mime_encoding = mimetypes.guess_type(file_name)
         upload_url = self.jmap_session.upload_url.format(
