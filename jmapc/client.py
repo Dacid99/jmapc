@@ -22,7 +22,7 @@ from .methods import (
     Response,
     ResponseOrError,
 )
-from .models import Blob, EmailBodyPart, Event
+from .models import Blob, Email, EmailBodyPart, Event
 from .session import Session
 
 RequestsAuth = Union[requests.auth.AuthBase, tuple[str, str]]
@@ -162,6 +162,28 @@ class Client:
             name=attachment.name,
             type=attachment.type,
         )
+        r = self.requests_session.get(
+            blob_url, stream=True, timeout=REQUEST_TIMEOUT
+        )
+        r.raise_for_status()
+        with open(file_name, "wb") as f:
+            f.write(r.raw.data)
+
+    def download_email(
+        self,
+        email: Email,
+        file_name: Union[str, Path],
+    ) -> None:
+        if not file_name:
+            raise Exception("Destination file name is required")
+        file_name = Path(file_name)
+        blob_url = self.jmap_session.download_url.format(
+            accountId=self.account_id,
+            blobId=email.blob_id,
+            name="",
+            type="message/rfc822",
+        )
+        print(blob_url)
         r = self.requests_session.get(
             blob_url, stream=True, timeout=REQUEST_TIMEOUT
         )
