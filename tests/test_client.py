@@ -161,7 +161,18 @@ def test_jmap_session_capabilities_urns(
     ),
 )
 def test_client_timeout(test_client: Client, expected_timeout: int) -> None:
+    assert test_client.timeout == expected_timeout
     assert test_client._timeout == expected_timeout
+
+
+def test_client_timeout_property(client: Client) -> None:
+    client.timeout = 78
+    assert client.timeout == 78
+    assert client._timeout == 78
+
+    client.timeout = 0
+    assert client.timeout == REQUEST_TIMEOUT
+    assert client._timeout == REQUEST_TIMEOUT
 
 
 def test_client_request_updated_session(
