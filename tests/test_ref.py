@@ -1,7 +1,6 @@
 import pytest
-
-from jmapc import Ref, ResultReference
-from jmapc.methods import Invocation, MailboxGet, MailboxQuery
+from jmaplib import Ref, ResultReference
+from jmaplib.methods import Invocation, MailboxGet, MailboxQuery
 
 
 def test_ref_with_no_method_calls() -> None:

@@ -1,7 +1,6 @@
 import responses
-
-from jmapc import AddedItem, Client, Mailbox, MailboxQueryFilterCondition
-from jmapc.methods import (
+from jmaplib import AddedItem, Client, Mailbox, MailboxQueryFilterCondition
+from jmaplib.methods import (
     MailboxChanges,
     MailboxChangesResponse,
     MailboxGet,

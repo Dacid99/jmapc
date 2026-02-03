@@ -1,7 +1,6 @@
 import responses
-
-from jmapc import Client, Mailbox, Ref, constants
-from jmapc.methods import (
+from jmaplib import Client, Mailbox, Ref, constants
+from jmaplib.methods import (
     CustomMethod,
     CustomResponse,
     InvocationResponseOrError,

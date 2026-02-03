@@ -1,8 +1,7 @@
 from datetime import datetime, timezone
 
 import responses
-
-from jmapc import (
+from jmaplib import (
     AddedItem,
     Client,
     Comparator,
@@ -13,7 +12,7 @@ from jmapc import (
     EmailHeader,
     EmailQueryFilterCondition,
 )
-from jmapc.methods import (
+from jmaplib.methods import (
     EmailChanges,
     EmailChangesResponse,
     EmailCopy,
@@ -440,8 +439,7 @@ def test_email_set(
                                 }
                             ],
                             "subject": (
-                                "I'm taking a day trip to "
-                                "Happy Happy Village"
+                                "I'm taking a day trip to Happy Happy Village"
                             ),
                             "keywords": {"$draft": True},
                             "mailboxIds": {"MBX1": True},

@@ -1,8 +1,7 @@
 from datetime import datetime, timezone
 
 import responses
-
-from jmapc import (
+from jmaplib import (
     AddedItem,
     Address,
     Client,
@@ -12,7 +11,7 @@ from jmapc import (
     SetError,
     UndoStatus,
 )
-from jmapc.methods import (
+from jmaplib.methods import (
     EmailSetResponse,
     EmailSubmissionChanges,
     EmailSubmissionChangesResponse,

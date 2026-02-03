@@ -1,7 +1,6 @@
 import responses
-
-from jmapc import Client, Identity
-from jmapc.methods import (
+from jmaplib import Client, Identity
+from jmaplib.methods import (
     IdentityChanges,
     IdentityChangesResponse,
     IdentityGet,

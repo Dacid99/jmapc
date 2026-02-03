@@ -1,13 +1,12 @@
 import json
-from typing import Optional
 from collections.abc import Iterable
+from typing import Optional
 from unittest import mock
 
 import pytest
 import responses
 import sseclient
-
-from jmapc import Client, Event, EventSourceConfig, StateChange, TypeState
+from jmaplib import Client, Event, EventSourceConfig, StateChange, TypeState
 
 from .data import make_session_response
 

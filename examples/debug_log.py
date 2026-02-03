@@ -3,14 +3,14 @@
 import logging
 import os
 
-from jmapc import Client
-from jmapc.logging import log
-from jmapc.methods import CoreEcho
+from jmaplib import Client
+from jmaplib.logging import log
+from jmaplib.methods import CoreEcho
 
 # Create basic console logger
 logging.basicConfig()
 
-# Set jmapc log level to DEBUG
+# Set jmaplib log level to DEBUG
 log.setLevel(logging.DEBUG)
 
 # Create and configure client
@@ -24,5 +24,5 @@ client.request(CoreEcho(data=dict(hello="world")))
 
 # Example output:
 #
-# DEBUG:jmapc:Sending JMAP request {"using": ["urn:ietf:params:jmap:core"], "methodCalls": [["Core/echo", {"hello": "world"}, "single.Core/echo"]]}    # noqa: E501
-# DEBUG:jmapc:Received JMAP response {"methodResponses":[["Core/echo",{"hello":"world"},"single.Core/echo"]]}                                          # noqa: E501
+# DEBUG:jmaplib:Sending JMAP request {"using": ["urn:ietf:params:jmap:core"], "methodCalls": [["Core/echo", {"hello": "world"}, "single.Core/echo"]]}    # noqa: E501
+# DEBUG:jmaplib:Received JMAP response {"methodResponses":[["Core/echo",{"hello":"world"},"single.Core/echo"]]}                                          # noqa: E501

@@ -1,7 +1,6 @@
 import responses
-
-from jmapc import Client, Thread
-from jmapc.methods import (
+from jmaplib import Client, Thread
+from jmaplib.methods import (
     ThreadChanges,
     ThreadChangesResponse,
     ThreadGet,

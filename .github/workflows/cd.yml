@@ -10,7 +10,7 @@ env:
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   Publish:
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/jmapc
+      url: https://pypi.org/p/jmaplib
     permissions:
       id-token: write
 

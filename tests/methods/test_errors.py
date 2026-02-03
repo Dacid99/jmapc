@@ -2,9 +2,8 @@ from typing import Any
 
 import pytest
 import responses
-
-from jmapc import Client, ClientError, Error, errors
-from jmapc.methods import CoreEcho, InvocationResponseOrError
+from jmaplib import Client, ClientError, Error, errors
+from jmaplib.methods import CoreEcho, InvocationResponseOrError
 
 from ..utils import expect_jmap_call
 

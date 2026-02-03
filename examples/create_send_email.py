@@ -2,7 +2,7 @@
 
 import os
 
-from jmapc import (
+from jmaplib import (
     Address,
     Client,
     Email,
@@ -16,7 +16,7 @@ from jmapc import (
     MailboxQueryFilterCondition,
     Ref,
 )
-from jmapc.methods import (
+from jmaplib.methods import (
     EmailSet,
     EmailSubmissionSet,
     EmailSubmissionSetResponse,
@@ -91,7 +91,7 @@ results = client.request(
                     to=[
                         EmailAddress(name=identity.name, email=identity.email)
                     ],
-                    subject=f"Email created with jmapc's {__file__}",
+                    subject=f"Email created with jmaplib's {__file__}",
                     keywords={"$draft": True},
                     mailbox_ids={drafts_mailbox_id: True},
                     body_values=dict(
@@ -101,7 +101,9 @@ results = client.request(
                         EmailBodyPart(part_id="body", type="text/plain")
                     ],
                     headers=[
-                        EmailHeader(name="X-jmapc-example-header", value="yes")
+                        EmailHeader(
+                            name="X-jmaplib-example-header", value="yes"
+                        )
                     ],
                 )
             )

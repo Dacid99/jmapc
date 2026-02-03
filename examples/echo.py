@@ -2,8 +2,8 @@
 
 import os
 
-from jmapc import Client
-from jmapc.methods import CoreEcho
+from jmaplib import Client
+from jmaplib.methods import CoreEcho
 
 # Create and configure client
 client = Client.create_with_api_token(

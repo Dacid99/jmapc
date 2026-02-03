@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
-
-from jmapc.methods import Response
+from jmaplib.methods import Response
 
 
 def test_method_base_get_method_name() -> None:

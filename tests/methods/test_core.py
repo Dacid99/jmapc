@@ -1,7 +1,6 @@
 import responses
-
-from jmapc import Client
-from jmapc.methods import CoreEcho, CoreEchoResponse
+from jmaplib import Client
+from jmaplib.methods import CoreEcho, CoreEchoResponse
 
 from ..utils import expect_jmap_call
 

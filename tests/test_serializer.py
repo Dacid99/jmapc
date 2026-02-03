@@ -4,10 +4,9 @@ from typing import Any, Optional
 
 import pytest
 from dataclasses_json import config
-
-from jmapc import EmailHeader, ResultReference
-from jmapc.models import ListOrRef
-from jmapc.serializer import Model, datetime_decode, datetime_encode
+from jmaplib import EmailHeader, ResultReference
+from jmaplib.models import ListOrRef
+from jmaplib.serializer import Model, datetime_decode, datetime_encode
 
 
 def test_camel_case() -> None:

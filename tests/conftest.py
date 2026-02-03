@@ -2,14 +2,13 @@ import json
 import logging
 import tempfile
 import time
-from pathlib import Path
 from collections.abc import Iterable
+from pathlib import Path
 
 import pytest
 import responses
-
-from jmapc import Client
-from jmapc.logging import log
+from jmaplib import Client
+from jmaplib.logging import log
 
 from .data import make_session_response
 

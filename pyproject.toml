@@ -3,12 +3,12 @@ requires = ["poetry-core>=2.0.0,<3.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "jmapc"
-description = "JMAP client library for Python"
+name = "jmaplib"
+description = "JMAP protocol client for Python"
 license = "GPL-3.0-or-later"
-authors = [ { name = "Stephen Kent", email = "smkent@smkent.net" } ]
+authors = [ { name = "David Aderbauer", email = "Dacid99@Dacid99.net" } ]
 readme = "README.md"
-repository = "https://github.com/smkent/jmapc"
+repository = "https://github.com/Dacid99/jmaplib"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
@@ -84,7 +84,7 @@ skips = ["B101"]  # assert_used
 line-length = 79
 
 [tool.coverage.run]
-source = ["jmapc"]
+source = ["jmaplib"]
 
 [tool.coverage.report]
 fail_under = 95
@@ -102,7 +102,7 @@ profile = "black"
 line_length = 79
 
 [tool.mypy]
-files = [ "tests", "jmapc" ]
+files = [ "tests", "jmaplib" ]
 mypy_path = "types"
 disallow_untyped_defs = true
 no_implicit_optional = true

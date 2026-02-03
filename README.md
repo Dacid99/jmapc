@@ -1,12 +1,12 @@
-# jmapc: A [JMAP][jmapio] client library for Python
+# jmaplib: A [JMAP][jmapio] protocol client for Python
 
-[![PyPI](https://img.shields.io/pypi/v/jmapc)][pypi]
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jmapc)][pypi]
-[![Build](https://img.shields.io/github/checks-status/smkent/jmapc/main?label=build)][gh-actions]
-[![codecov](https://codecov.io/gh/smkent/jmapc/branch/main/graph/badge.svg)][codecov]
-[![GitHub stars](https://img.shields.io/github/stars/smkent/jmapc?style=social)][repo]
+[![PyPI](https://img.shields.io/pypi/v/jmaplib)][pypi]
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jmaplib)][pypi]
+[![Build](https://img.shields.io/github/checks-status/Dacid99/jmaplib/main?label=build)][gh-actions]
+[![codecov](https://codecov.io/gh/Dacid99/jmaplib/branch/main/graph/badge.svg)][codecov]
+[![GitHub stars](https://img.shields.io/github/stars/Dacid99/jmaplib?style=social)][repo]
 
-[![jmapc][logo]](#)
+[![jmaplib][logo]](#)
 
 Currently implemented:
 
@@ -34,10 +34,10 @@ Currently implemented:
 
 ## Installation
 
-[jmapc is available on PyPI][pypi]:
+[jmaplib is available on PyPI][pypi]:
 
 ```console
-pip install jmapc
+pip install jmaplib
 ```
 
 ## Examples
@@ -85,17 +85,20 @@ poetry self add poetry-pre-commit-plugin
 
 ---
 
-Created from [smkent/cookie-python][cookie-python] using
-[cookiecutter][cookiecutter]
+This project is a fork of the [jmapc client library for Python][jmapc].
 
-[codecov]: https://codecov.io/gh/smkent/jmapc
-[cookie-python]: https://github.com/smkent/cookie-python
+A big THANKYOU to its creators!
+
+Created using [cookiecutter][cookiecutter]
+
+[codecov]: https://codecov.io/gh/Dacid99/jmaplib
 [cookiecutter]: https://github.com/cookiecutter/cookiecutter
 [fastmail-maskedemail]: https://www.fastmail.com/developer/maskedemail/
-[gh-actions]: https://github.com/smkent/jmapc/actions?query=branch%3Amain
-[logo]: https://raw.github.com/smkent/jmapc/main/img/jmapc.png
+[gh-actions]: https://github.com/Dacid99/jmaplib/actions?query=branch%3Amain
+[logo]: https://raw.github.com/Dacid99/jmaplib/main/img/jmaplib.png
 [jmapio]: https://jmap.io
 [pipx]: https://pypa.github.io/pipx/
 [poetry]: https://python-poetry.org/docs/#installation
-[pypi]: https://pypi.org/project/jmapc/
-[repo]: https://github.com/smkent/jmapc
+[pypi]: https://pypi.org/project/jmaplib/
+[repo]: https://github.com/Dacid99/jmaplib
+[jmapc]: https://github.com/smkent/jmapc

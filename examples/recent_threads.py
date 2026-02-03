@@ -3,14 +3,14 @@
 import os
 from datetime import datetime, timedelta, timezone
 
-from jmapc import (
+from jmaplib import (
     Client,
     Comparator,
     EmailQueryFilterCondition,
     MailboxQueryFilterCondition,
     Ref,
 )
-from jmapc.methods import (
+from jmaplib.methods import (
     EmailGet,
     EmailQuery,
     MailboxGet,

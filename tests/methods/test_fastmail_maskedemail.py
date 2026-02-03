@@ -1,9 +1,8 @@
 from datetime import datetime, timezone
 
 import responses
-
-from jmapc import Client
-from jmapc.fastmail import (
+from jmaplib import Client
+from jmaplib.fastmail import (
     MaskedEmail,
     MaskedEmailGet,
     MaskedEmailGetResponse,

@@ -2,8 +2,8 @@
 
 import os
 
-from jmapc import Client, MailboxQueryFilterCondition, Ref
-from jmapc.methods import MailboxGet, MailboxGetResponse, MailboxQuery
+from jmaplib import Client, MailboxQueryFilterCondition, Ref
+from jmaplib.methods import MailboxGet, MailboxGetResponse, MailboxQuery
 
 # Create and configure client
 client = Client.create_with_api_token(

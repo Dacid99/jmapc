@@ -4,8 +4,8 @@ import collections
 import os
 from typing import Optional
 
-from jmapc import Client, Ref, TypeState
-from jmapc.methods import EmailChanges, EmailGet, EmailGetResponse
+from jmaplib import Client, Ref, TypeState
+from jmaplib.methods import EmailChanges, EmailGet, EmailGetResponse
 
 MAX_EVENTS = 5
 
