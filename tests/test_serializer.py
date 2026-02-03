@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from dataclasses_json import config
+
 from jmaplib import EmailHeader, ResultReference
-from jmaplib.models import ListOrRef
+
+if TYPE_CHECKING:
+    from jmaplib.models import ListOrRef
 from jmaplib.serializer import Model, datetime_decode, datetime_encode
 
 
@@ -74,7 +79,7 @@ def test_serialize_header_2() -> None:
 def test_serialize_add_account_id() -> None:
     @dataclass
     class TestModel(Model):
-        account_id: Optional[str] = field(init=False)
+        account_id: str | None = field(init=False)
         data: str
 
     d = TestModel(
@@ -91,15 +96,13 @@ def test_serialize_add_account_id() -> None:
             datetime(2022, 2, 26, 12, 31, 45, tzinfo=timezone.utc),
             dict(timestamp="2022-02-26T12:31:45Z"),
         ),
-        (None, dict()),
+        (None, {}),
     ],
 )
-def test_serialize_datetime(
-    dt: datetime, expected_dict: dict[str, Any]
-) -> None:
+def test_serialize_datetime(dt: datetime, expected_dict: dict[str, Any]) -> None:
     @dataclass
     class TestModel(Model):
-        timestamp: Optional[datetime] = field(
+        timestamp: datetime | None = field(
             default=None,
             metadata=config(encoder=datetime_encode, decoder=datetime_decode),
         )

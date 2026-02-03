@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 import responses
+
 from jmaplib import (
     AddedItem,
     Client,
@@ -26,13 +27,10 @@ from jmaplib.methods import (
     EmailSet,
     EmailSetResponse,
 )
+from tests.utils import expect_jmap_call
 
-from ..utils import expect_jmap_call
 
-
-def test_email_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_email_changes(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -81,9 +79,7 @@ def test_email_changes(
     )
 
 
-def test_email_copy(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_email_copy(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -148,9 +144,7 @@ def test_email_copy(
     )
 
 
-def test_email_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_email_get(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -197,9 +191,7 @@ def test_email_get(
                                     "email": "paula-reply@twoson.example.net",
                                 }
                             ],
-                            "subject": (
-                                "I'm taking a day trip to Happy Happy Village"
-                            ),
+                            "subject": ("I'm taking a day trip to Happy Happy Village"),
                             "receivedAt": "1994-08-24T12:01:02Z",
                         },
                     ],
@@ -229,27 +221,19 @@ def test_email_get(
                 thread_id="T1",
                 mailbox_ids={"MBX1": True, "MBX5": True},
                 mail_from=[
-                    EmailAddress(
-                        name="Paula", email="paula@twoson.example.net"
-                    ),
+                    EmailAddress(name="Paula", email="paula@twoson.example.net"),
                 ],
                 reply_to=[
-                    EmailAddress(
-                        name="Paula", email="paula-reply@twoson.example.net"
-                    ),
+                    EmailAddress(name="Paula", email="paula-reply@twoson.example.net"),
                 ],
                 subject="I'm taking a day trip to Happy Happy Village",
-                received_at=datetime(
-                    1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                ),
+                received_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
             ),
         ],
     )
 
 
-def test_email_query(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_email_query(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -400,9 +384,7 @@ def test_email_query_changes(
     )
 
 
-def test_email_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_email_set(client: Client, http_responses: responses.RequestsMock) -> None:
     draft = Email(
         mail_from=[
             EmailAddress(name="Paula", email="paula@twoson.example.net"),
@@ -438,17 +420,11 @@ def test_email_set(
                                     "name": "Ness",
                                 }
                             ],
-                            "subject": (
-                                "I'm taking a day trip to Happy Happy Village"
-                            ),
+                            "subject": ("I'm taking a day trip to Happy Happy Village"),
                             "keywords": {"$draft": True},
                             "mailboxIds": {"MBX1": True},
-                            "bodyValues": {
-                                "body": {"value": "See you there!"}
-                            },
-                            "textBody": [
-                                {"partId": "body", "type": "text/plain"}
-                            ],
+                            "bodyValues": {"body": {"value": "See you there!"}},
+                            "textBody": [{"partId": "body", "type": "text/plain"}],
                             "header:X-Onett-Sanctuary": "Giant Step",
                         }
                     },
@@ -489,16 +465,12 @@ def test_email_set(
     }
     expect_jmap_call(http_responses, expected_request, response)
 
-    assert client.request(
-        EmailSet(create=dict(draft=draft))
-    ) == EmailSetResponse(
+    assert client.request(EmailSet(create=dict(draft=draft))) == EmailSetResponse(
         account_id="u1138",
         old_state="1",
         new_state="2",
         created=dict(
-            draft=Email(
-                blob_id="G12345", id="M1001", size=42, thread_id="T1002"
-            )
+            draft=Email(blob_id="G12345", id="M1001", size=42, thread_id="T1002")
         ),
         updated=None,
         destroyed=None,

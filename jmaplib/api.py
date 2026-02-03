@@ -1,13 +1,12 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from typing import (
     Any,
     Callable,
-    Union,
     cast,
 )
-from collections.abc import Sequence
 
 from dataclasses_json import config
 
@@ -46,7 +45,7 @@ class APIResponse(Model):
     session_state: str
     method_responses: list[InvocationResponseOrError] = field(
         metadata=config(
-            encoder=lambda value: None,
+            encoder=lambda _: None,
             decoder=decode_method_responses,
         ),
     )
@@ -57,19 +56,19 @@ class APIResponse(Model):
 class APIRequest(Model):
     account_id: str = field(
         repr=False,
-        metadata=config(exclude=cast(Callable[..., bool], lambda *_: True)),
+        metadata=config(exclude=cast("Callable[..., bool]", lambda *_: True)),
     )
     method_calls: list[tuple[str, Any, str]]
     using: set[str] = field(
         init=False,
         default_factory=lambda: {constants.JMAP_URN_CORE},
-        metadata=config(encoder=lambda value: sorted(list(value))),
+        metadata=config(encoder=lambda value: sorted(value)),
     )
 
     @staticmethod
     def from_calls(
         account_id: str,
-        calls: Union[Sequence[Request], Sequence[Method], Method],
+        calls: Sequence[Request] | Sequence[Method] | Method,
     ) -> APIRequest:
         calls_list = calls if isinstance(calls, Sequence) else [calls]
         invocations: list[Invocation] = []
@@ -95,10 +94,6 @@ class APIRequest(Model):
             )
             for i, c in enumerate(invocations)
         ]
-        api_request = APIRequest(
-            account_id=account_id, method_calls=method_calls
-        )
-        api_request.using |= set().union(
-            *[c.method.using for c in invocations]
-        )
+        api_request = APIRequest(account_id=account_id, method_calls=method_calls)
+        api_request.using |= set().union(*[c.method.using for c in invocations])
         return api_request

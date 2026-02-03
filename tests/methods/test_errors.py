@@ -2,10 +2,10 @@ from typing import Any
 
 import pytest
 import responses
+
 from jmaplib import Client, ClientError, Error, errors
 from jmaplib.methods import CoreEcho, InvocationResponseOrError
-
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 @pytest.mark.parametrize("raise_errors", [True, False])
@@ -108,9 +108,7 @@ def test_method_error(
             client.request(CoreEcho(data=test_data), raise_errors=True)
         assert str(e.value) == "Errors found in method responses"
         assert e.value.result == [
-            InvocationResponseOrError(
-                id="single.Core/echo", response=expected_error
-            )
+            InvocationResponseOrError(id="single.Core/echo", response=expected_error)
         ]
     else:
         resp = client.request(CoreEcho(data=test_data), raise_errors=False)

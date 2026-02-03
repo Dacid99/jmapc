@@ -24,5 +24,5 @@ client.request(CoreEcho(data=dict(hello="world")))
 
 # Example output:
 #
-# DEBUG:jmaplib:Sending JMAP request {"using": ["urn:ietf:params:jmap:core"], "methodCalls": [["Core/echo", {"hello": "world"}, "single.Core/echo"]]}    # noqa: E501
-# DEBUG:jmaplib:Received JMAP response {"methodResponses":[["Core/echo",{"hello":"world"},"single.Core/echo"]]}                                          # noqa: E501
+# DEBUG:jmaplib:Sending JMAP request {"using": ["urn:ietf:params:jmap:core"], "methodCalls": [["Core/echo", {"hello": "world"}, "single.Core/echo"]]}
+# DEBUG:jmaplib:Received JMAP response {"methodResponses":[["Core/echo",{"hello":"world"},"single.Core/echo"]]}

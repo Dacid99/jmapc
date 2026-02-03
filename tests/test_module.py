@@ -1,7 +1,7 @@
 def test_import() -> None:
-    import jmaplib
+    import jmaplib  # noqa: PLC0415  # testing for import
 
-    assert jmaplib.Client  # type: ignore[truthy-function]
+    assert jmaplib.Client
     assert jmaplib.methods
     assert jmaplib.models
     assert jmaplib.errors

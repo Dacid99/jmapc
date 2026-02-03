@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import EmailSubmission, EmailSubmissionQueryFilter
+from jmaplib import constants
+
+if TYPE_CHECKING:
+    from jmaplib.models import EmailSubmission, EmailSubmissionQueryFilter
+
 from .base import (
     Changes,
     ChangesResponse,
@@ -22,8 +25,8 @@ from .base import (
 
 
 class EmailSubmissionBase:
-    method_namespace: Optional[str] = "EmailSubmission"
-    using = {constants.JMAP_URN_SUBMISSION}
+    method_namespace: str | None = "EmailSubmission"
+    using: ClassVar[set[str]] = {constants.JMAP_URN_SUBMISSION}
 
 
 @dataclass
@@ -48,7 +51,7 @@ class EmailSubmissionGetResponse(EmailSubmissionBase, GetResponse):
 
 @dataclass
 class EmailSubmissionQuery(EmailSubmissionBase, Query):
-    filter: Optional[EmailSubmissionQueryFilter] = None
+    filter: EmailSubmissionQueryFilter | None = None
 
 
 @dataclass
@@ -58,24 +61,22 @@ class EmailSubmissionQueryResponse(EmailSubmissionBase, QueryResponse):
 
 @dataclass
 class EmailSubmissionQueryChanges(EmailSubmissionBase, QueryChanges):
-    filter: Optional[EmailSubmissionQueryFilter] = None
+    filter: EmailSubmissionQueryFilter | None = None
 
 
 @dataclass
-class EmailSubmissionQueryChangesResponse(
-    EmailSubmissionBase, QueryChangesResponse
-):
+class EmailSubmissionQueryChangesResponse(EmailSubmissionBase, QueryChangesResponse):
     pass
 
 
 @dataclass
 class EmailSubmissionSet(EmailSubmissionBase, Set):
-    create: Optional[dict[str, EmailSubmission]] = None
-    on_success_update_email: Optional[dict[str, Any]] = None
-    on_success_destroy_email: Optional[list[str]] = None
+    create: dict[str, EmailSubmission] | None = None
+    on_success_update_email: dict[str, Any] | None = None
+    on_success_destroy_email: list[str] | None = None
 
 
 @dataclass
 class EmailSubmissionSetResponse(EmailSubmissionBase, SetResponse):
-    created: Optional[dict[str, Optional[EmailSubmission]]]
-    updated: Optional[dict[str, Optional[EmailSubmission]]]
+    created: dict[str, EmailSubmission | None] | None
+    updated: dict[str, EmailSubmission | None] | None

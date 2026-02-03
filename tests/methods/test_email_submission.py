@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 import responses
+
 from jmaplib import (
     AddedItem,
     Address,
@@ -24,8 +25,7 @@ from jmaplib.methods import (
     EmailSubmissionSet,
     EmailSubmissionSetResponse,
 )
-
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 expected_request_create = {
     "emailToSend": {
@@ -278,9 +278,7 @@ def test_email_submission_query_changes(
     expect_jmap_call(http_responses, expected_request, response)
     assert client.request(
         EmailSubmissionQueryChanges(
-            filter=EmailSubmissionQueryFilterCondition(
-                undo_status=UndoStatus.FINAL
-            ),
+            filter=EmailSubmissionQueryFilterCondition(undo_status=UndoStatus.FINAL),
             since_query_state="1000",
         )
     ) == EmailSubmissionQueryChangesResponse(
@@ -425,9 +423,7 @@ def test_email_submission_set_on_success_destroy_email(
                 emailToSend=EmailSubmission(
                     id="S2000",
                     undo_status=UndoStatus.FINAL,
-                    send_at=datetime(
-                        1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                    ),
+                    send_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                 ),
             ),
             updated=None,
@@ -524,9 +520,7 @@ def test_email_submission_set_on_success_update_email(
                 emailToSend=EmailSubmission(
                     id="S2000",
                     undo_status=UndoStatus.FINAL,
-                    send_at=datetime(
-                        1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                    ),
+                    send_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                 ),
             ),
             updated=None,
@@ -628,9 +622,7 @@ def test_email_submission_set_update_email_error(
                 emailToSend=EmailSubmission(
                     id="S2000",
                     undo_status=UndoStatus.FINAL,
-                    send_at=datetime(
-                        1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                    ),
+                    send_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                 ),
             ),
             updated=None,

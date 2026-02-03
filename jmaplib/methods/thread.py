@@ -1,18 +1,21 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import TYPE_CHECKING, ClassVar
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import Thread
+from jmaplib import constants
+
 from .base import Changes, ChangesResponse, Get, GetResponse
+
+if TYPE_CHECKING:
+    from jmaplib.models import Thread
 
 
 class ThreadBase:
-    method_namespace: Optional[str] = "Thread"
-    using = {constants.JMAP_URN_MAIL}
+    method_namespace: str | None = "Thread"
+    using: ClassVar[set[str]] = {constants.JMAP_URN_MAIL}
 
 
 @dataclass

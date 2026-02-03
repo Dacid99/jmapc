@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 import responses
+
 from jmaplib import Client
 from jmaplib.fastmail import (
     MaskedEmail,
@@ -10,8 +11,7 @@ from jmaplib.fastmail import (
     MaskedEmailSetResponse,
     MaskedEmailState,
 )
-
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_maskedemail_get(
@@ -41,9 +41,7 @@ def test_maskedemail_get(
                             "id": "masked-1138",
                             "email": "pk.fire@ness.example.com",
                             "forDomain": "ness.example.com",
-                            "description": (
-                                "Masked Email (pk.fire@ness.example.com)"
-                            ),
+                            "description": ("Masked Email (pk.fire@ness.example.com)"),
                             "lastMessageAt": "1994-08-24T12:01:02Z",
                             "createdAt": "1994-08-24T12:01:02Z",
                             "createdBy": "ness",
@@ -69,12 +67,8 @@ def test_maskedemail_get(
                 email="pk.fire@ness.example.com",
                 for_domain="ness.example.com",
                 description="Masked Email (pk.fire@ness.example.com)",
-                last_message_at=datetime(
-                    1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                ),
-                created_at=datetime(
-                    1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                ),
+                last_message_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
+                created_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                 created_by="ness",
             ),
         ],
@@ -154,9 +148,7 @@ def test_maskedemail_set(
                     last_message_at=datetime(
                         1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
                     ),
-                    created_at=datetime(
-                        1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                    ),
+                    created_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                     created_by="API Token: onett-dev",
                 )
             )
@@ -173,9 +165,7 @@ def test_maskedemail_set(
                 for_domain="ness.example.com",
                 description="Masked Email (pk.fire2187@ness.example.com)",
                 last_message_at=None,
-                created_at=datetime(
-                    1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc
-                ),
+                created_at=datetime(1994, 8, 24, 12, 1, 2, tzinfo=timezone.utc),
                 created_by="API Token: onett-dev",
             ),
         ),

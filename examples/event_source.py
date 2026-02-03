@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
 import collections
 import os
-from typing import Optional
 
 from jmaplib import Client, Ref, TypeState
 from jmaplib.methods import EmailChanges, EmailGet, EmailGetResponse
@@ -16,9 +17,7 @@ client = Client.create_with_api_token(
 
 
 # Create a callback for email state changes
-def email_change_callback(
-    prev_state: Optional[str], new_state: Optional[str]
-) -> None:
+def email_change_callback(prev_state: str | None, new_state: str | None) -> None:
     if not prev_state or not new_state:
         return
     results = client.request(

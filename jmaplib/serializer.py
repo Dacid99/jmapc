@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-from datetime import datetime
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import dataclasses_json
 import dateutil.parser
@@ -10,6 +9,8 @@ import dateutil.parser
 from .ref import REF_SENTINEL_KEY, Ref, ResultReference
 
 if TYPE_CHECKING:
+    from datetime import datetime
+
     from .methods import Invocation  # pragma: no cover
 
 
@@ -17,23 +18,21 @@ def datetime_encode(dt: datetime) -> str:
     return f"{dt.replace(tzinfo=None).isoformat()}Z"
 
 
-def datetime_decode(value: Optional[str]) -> Optional[datetime]:
+def datetime_decode(value: str | None) -> datetime | None:
     if not value:
         return None
     return dateutil.parser.isoparse(value)
 
 
 class ModelToDictPostprocessor:
-    def __init__(
-        self, method_calls_slice: Optional[list[Invocation]] = None
-    ) -> None:
+    def __init__(self, method_calls_slice: list[Invocation] | None = None) -> None:
         self.method_calls_slice = method_calls_slice
 
     def postprocess(
         self,
         data: dict[str, dataclasses_json.core.Json],
     ) -> dict[str, dataclasses_json.core.Json]:
-        for key in [key for key in data.keys() if not key.startswith("#")]:
+        for key in [key for key in data if not key.startswith("#")]:
             value = data[key]
             if isinstance(value, dict):
                 if REF_SENTINEL_KEY in value:
@@ -52,14 +51,14 @@ class ModelToDictPostprocessor:
         return data
 
     def resolve_ref_target(self, ref: Ref) -> int:
-        assert self.method_calls_slice
+        assert self.method_calls_slice  # noqa: S101  # leave this for now
         if isinstance(ref.method, int):
             return ref.method
         if isinstance(ref.method, str):
             for i, m in enumerate(self.method_calls_slice):
                 if m.id == ref.method:
                     return i
-            raise IndexError(f'Call "{ref.method}" for reference not found')
+        raise IndexError(f'Call "{ref.method}" for reference not found')
 
     def ref_to_result_reference(self, ref: Ref) -> ResultReference:
         if not self.method_calls_slice:
@@ -76,15 +75,13 @@ class ModelToDictPostprocessor:
         data: dict[str, dataclasses_json.core.Json],
         key: str,
     ) -> dict[str, dataclasses_json.core.Json]:
-        ref_type = cast(dict[str, Any], data[key]).get(REF_SENTINEL_KEY)
+        ref_type = cast("dict[str, Any]", data[key]).get(REF_SENTINEL_KEY)
         if ref_type == "ResultReference":
             rr = ResultReference.from_dict(data[key])
         elif ref_type == "Ref":
             rr = self.ref_to_result_reference(Ref.from_dict(data[key]))
         else:
-            raise ValueError(
-                f"Unexpected reference sentinel value: {ref_type}"
-            )
+            raise ValueError(f"Unexpected reference sentinel value: {ref_type}")
         data[key] = rr.to_dict()
         # Replace existing key with #-prefixed key
         new_key = f"#{key}"
@@ -92,7 +89,7 @@ class ModelToDictPostprocessor:
         del data[key]
         # Remove ref sentinel key from serialized output
         new_data = data[new_key]
-        assert isinstance(new_data, dict)
+        assert isinstance(new_data, dict)  # noqa: S101  # leave this for now
         del new_data[REF_SENTINEL_KEY]
         return data
 
@@ -120,11 +117,11 @@ class Model(dataclasses_json.DataClassJsonMixin):
     def to_dict(
         self,
         *args: Any,
-        account_id: Optional[str] = None,
-        method_calls_slice: Optional[list[Invocation]] = None,
+        account_id: str | None = None,
+        method_calls_slice: list[Invocation] | None = None,
         **kwargs: Any,
     ) -> dict[str, dataclasses_json.core.Json]:
         if account_id:
-            self.account_id: Optional[str] = account_id
+            self.account_id: str | None = account_id
         todict = ModelToDictPostprocessor(method_calls_slice)
         return todict.postprocess(super().to_dict(*args, **kwargs))

@@ -1,4 +1,5 @@
 import responses
+
 from jmaplib import Client, Identity
 from jmaplib.methods import (
     IdentityChanges,
@@ -8,8 +9,7 @@ from jmaplib.methods import (
     IdentitySet,
     IdentitySetResponse,
 )
-
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_identity_changes(
@@ -63,9 +63,7 @@ def test_identity_changes(
     )
 
 
-def test_identity_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_identity_get(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             ["Identity/get", {"accountId": "u1138"}, "single.Identity/get"]
@@ -120,9 +118,7 @@ def test_identity_get(
     )
 
 
-def test_identity_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_identity_set(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [

@@ -85,26 +85,14 @@ results = client.request(
         EmailSet(
             create=dict(
                 draft=Email(
-                    mail_from=[
-                        EmailAddress(name=identity.name, email=identity.email)
-                    ],
-                    to=[
-                        EmailAddress(name=identity.name, email=identity.email)
-                    ],
+                    mail_from=[EmailAddress(name=identity.name, email=identity.email)],
+                    to=[EmailAddress(name=identity.name, email=identity.email)],
                     subject=f"Email created with jmaplib's {__file__}",
                     keywords={"$draft": True},
                     mailbox_ids={drafts_mailbox_id: True},
-                    body_values=dict(
-                        body=EmailBodyValue(value=TEST_EMAIL_BODY)
-                    ),
-                    text_body=[
-                        EmailBodyPart(part_id="body", type="text/plain")
-                    ],
-                    headers=[
-                        EmailHeader(
-                            name="X-jmaplib-example-header", value="yes"
-                        )
-                    ],
+                    body_values=dict(body=EmailBodyValue(value=TEST_EMAIL_BODY)),
+                    text_body=[EmailBodyPart(part_id="body", type="text/plain")],
+                    headers=[EmailHeader(name="X-jmaplib-example-header", value="yes")],
                 )
             )
         ),

@@ -1,4 +1,5 @@
 import responses
+
 from jmaplib import AddedItem, Client, Mailbox, MailboxQueryFilterCondition
 from jmaplib.methods import (
     MailboxChanges,
@@ -12,8 +13,7 @@ from jmaplib.methods import (
     MailboxSet,
     MailboxSetResponse,
 )
-
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_mailbox_changes(
@@ -67,9 +67,7 @@ def test_mailbox_changes(
     )
 
 
-def test_mailbox_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_mailbox_get(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -119,9 +117,7 @@ def test_mailbox_get(
         ]
     }
     expect_jmap_call(http_responses, expected_request, response)
-    assert client.request(
-        MailboxGet(ids=["MBX1", "MBX1000"])
-    ) == MailboxGetResponse(
+    assert client.request(MailboxGet(ids=["MBX1", "MBX1000"])) == MailboxGetResponse(
         account_id="u1138",
         state="2187",
         not_found=[],
@@ -150,9 +146,7 @@ def test_mailbox_get(
     )
 
 
-def test_mailbox_query(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_mailbox_query(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -271,9 +265,7 @@ def test_mailbox_query_changes(
     )
 
 
-def test_mailbox_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_mailbox_set(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -341,9 +333,7 @@ def test_mailbox_set(
     expect_jmap_call(http_responses, expected_request, response)
 
     assert client.request(
-        MailboxSet(
-            create=dict(mailbox=Mailbox(name="Saturn Valley Newsletter"))
-        )
+        MailboxSet(create=dict(mailbox=Mailbox(name="Saturn Valley Newsletter")))
     ) == MailboxSetResponse(
         account_id="u1138",
         old_state="1",

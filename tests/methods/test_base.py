@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import pytest
+
 from jmaplib.methods import Response
 
 

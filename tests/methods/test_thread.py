@@ -1,4 +1,5 @@
 import responses
+
 from jmaplib import Client, Thread
 from jmaplib.methods import (
     ThreadChanges,
@@ -6,13 +7,10 @@ from jmaplib.methods import (
     ThreadGet,
     ThreadGetResponse,
 )
+from tests.utils import expect_jmap_call
 
-from ..utils import expect_jmap_call
 
-
-def test_thread_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_thread_changes(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [
@@ -61,9 +59,7 @@ def test_thread_changes(
     )
 
 
-def test_thread_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+def test_thread_get(client: Client, http_responses: responses.RequestsMock) -> None:
     expected_request = {
         "methodCalls": [
             [

@@ -1,26 +1,29 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import TYPE_CHECKING, ClassVar
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import EmailQueryFilter, ListOrRef, SearchSnippet, TypeOrRef
+from jmaplib import constants
+
+if TYPE_CHECKING:
+    from jmaplib.models import EmailQueryFilter, ListOrRef, SearchSnippet, TypeOrRef
+
 from .base import Get, GetResponseWithoutState
 
 
 class SearchSnippetBase:
-    method_namespace: Optional[str] = "SearchSnippet"
-    using = {constants.JMAP_URN_MAIL}
+    method_namespace: str | None = "SearchSnippet"
+    using: ClassVar[set[str]] = {constants.JMAP_URN_MAIL}
 
 
 @dataclass
 class SearchSnippetGet(SearchSnippetBase, Get):
-    ids: Optional[ListOrRef[str]] = field(
+    ids: ListOrRef[str] | None = field(
         metadata=config(field_name="emailIds"), default=None
     )
-    filter: Optional[TypeOrRef[EmailQueryFilter]] = None
+    filter: TypeOrRef[EmailQueryFilter] | None = None
 
 
 @dataclass

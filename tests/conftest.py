@@ -1,12 +1,18 @@
+from __future__ import annotations
+
 import json
 import logging
 import tempfile
 import time
-from collections.abc import Iterable
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 import pytest
 import responses
+
 from jmaplib import Client
 from jmaplib.logging import log
 
@@ -29,12 +35,12 @@ def test_log() -> Iterable[None]:
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     log.setLevel(logging.DEBUG)
-    yield
+    return
 
 
 @pytest.fixture
 def client() -> Iterable[Client]:
-    yield Client(host="jmap-example.localhost", auth=("ness", "pk_fire"))
+    return Client(host="jmap-example.localhost", auth=("ness", "pk_fire"))
 
 
 @pytest.fixture
@@ -52,7 +58,7 @@ def http_responses(
         url="https://jmap-example.localhost/.well-known/jmap",
         body=json.dumps(make_session_response()),
     )
-    yield http_responses_base
+    return http_responses_base
 
 
 @pytest.fixture

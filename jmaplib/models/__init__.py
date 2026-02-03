@@ -1,13 +1,13 @@
 from .email import (
     Email,
     EmailBodyPart,
+    EmailBodyPartProperties,
     EmailBodyValue,
     EmailHeader,
+    EmailProperties,
     EmailQueryFilter,
     EmailQueryFilterCondition,
     EmailQueryFilterOperator,
-    EmailProperties,
-    EmailBodyPartProperties,
 )
 from .email_submission import (
     Address,
@@ -54,10 +54,10 @@ __all__ = [
     "Email",
     "EmailAddress",
     "EmailBodyPart",
+    "EmailBodyPartProperties",
     "EmailBodyValue",
     "EmailHeader",
     "EmailProperties",
-    "EmailBodyPartProperties",
     "EmailQueryFilter",
     "EmailQueryFilterCondition",
     "EmailQueryFilterOperator",

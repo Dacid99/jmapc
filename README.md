@@ -6,8 +6,6 @@
 [![codecov](https://codecov.io/gh/Dacid99/jmaplib/branch/main/graph/badge.svg)][codecov]
 [![GitHub stars](https://img.shields.io/github/stars/Dacid99/jmaplib?style=social)][repo]
 
-[![jmaplib][logo]](#)
-
 Currently implemented:
 
 * Basic models
@@ -52,7 +50,7 @@ poetry run examples/identity_get.py
 
 If successful, `examples/identity_get.py` should output something like:
 
-```
+```text
 Identity 12345 is for Ness at ness@onett.example.com
 Identity 67890 is for Ness at ness-alternate@onett.example.com
 ```
@@ -95,7 +93,6 @@ Created using [cookiecutter][cookiecutter]
 [cookiecutter]: https://github.com/cookiecutter/cookiecutter
 [fastmail-maskedemail]: https://www.fastmail.com/developer/maskedemail/
 [gh-actions]: https://github.com/Dacid99/jmaplib/actions?query=branch%3Amain
-[logo]: https://raw.github.com/Dacid99/jmaplib/main/img/jmaplib.png
 [jmapio]: https://jmap.io
 [pipx]: https://pypa.github.io/pipx/
 [poetry]: https://python-poetry.org/docs/#installation

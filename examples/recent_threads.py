@@ -68,9 +68,7 @@ results = client.request(
 )
 
 # From results, third result, ThreadGet instance, retrieve Threads data
-assert isinstance(
-    results[2].response, ThreadGetResponse
-), "Error in Thread/get method"
+assert isinstance(results[2].response, ThreadGetResponse), "Error in Thread/get method"
 for thread in results[2].response.data:
     print(f"Thread {thread.id} has {len(thread.email_ids)} emails")
 

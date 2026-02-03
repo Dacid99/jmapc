@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import functools
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import CatchAll, Undefined, config, dataclass_json
 
@@ -16,16 +17,15 @@ class Session(Model):
     upload_url: str
     event_source_url: str
     state: str
-    primary_accounts: "SessionPrimaryAccount"
-    capabilities: "SessionCapabilities"
+    primary_accounts: SessionPrimaryAccount
+    capabilities: SessionCapabilities
 
 
 @dataclass_json(undefined=Undefined.INCLUDE)
 @dataclass
 class SessionCapabilities(Model):
-    # dataclasses_json.CatchAll Currently does not work with
-    # from __future__ import annotations
-    core: "SessionCapabilitiesCore" = field(
+    # 'dataclasses_json.CatchAll' currently does not work with '__future__.annotations'
+    core: SessionCapabilitiesCore = field(
         metadata=config(field_name=constants.JMAP_URN_CORE)
     )
     extensions: CatchAll = field(default_factory=dict)
@@ -49,12 +49,12 @@ class SessionCapabilitiesCore(Model):
 
 @dataclass
 class SessionPrimaryAccount(Model):
-    core: Optional[str] = field(
+    core: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_CORE), default=None
     )
-    mail: Optional[str] = field(
+    mail: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_MAIL), default=None
     )
-    submission: Optional[str] = field(
+    submission: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_SUBMISSION), default=None
     )

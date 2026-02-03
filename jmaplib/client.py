@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import functools
 import mimetypes
-from collections.abc import Generator, Sequence
 from dataclasses import asdict, dataclass
-from pathlib import Path
-from typing import Any, Literal, Optional, TypeVar, Union, cast, overload
+from typing import TYPE_CHECKING, Any, Literal, TypeVar, Union, cast, overload
 
 import requests
 import sseclient
+from typing_extensions import Self
 
 from . import errors
 from .api import APIRequest, APIResponse
@@ -24,6 +23,10 @@ from .methods import (
 )
 from .models import Blob, Email, EmailBodyPart, Event
 from .session import Session
+
+if TYPE_CHECKING:
+    from collections.abc import Generator, Sequence
+    from pathlib import Path
 
 RequestsAuth = Union[requests.auth.AuthBase, tuple[str, str]]
 ClientType = TypeVar("ClientType", bound="Client")
@@ -42,7 +45,7 @@ class ClientError(RuntimeError):
     def __init__(
         self,
         *args: Any,
-        result: Sequence[Union[InvocationResponse, InvocationResponseOrError]],
+        result: Sequence[InvocationResponse | InvocationResponseOrError],
         **kwargs: Any,
     ):
         super().__init__(*args, **kwargs)
@@ -52,43 +55,41 @@ class ClientError(RuntimeError):
 class Client:
     @classmethod
     def create_with_api_token(
-        cls: type[ClientType],
+        cls,
         host: str,
         api_token: str,
         *args: Any,
         **kwargs: Any,
-    ) -> ClientType:
+    ) -> Self:
         kwargs["auth"] = BearerAuth(api_token)
         return cls(host, *args, **kwargs)
 
     @classmethod
     def create_with_password(
-        cls: type[ClientType],
+        cls,
         host: str,
         user: str,
         password: str,
         *args: Any,
         **kwargs: Any,
-    ) -> ClientType:
-        kwargs["auth"] = requests.auth.HTTPBasicAuth(
-            username=user, password=password
-        )
+    ) -> Self:
+        kwargs["auth"] = requests.auth.HTTPBasicAuth(username=user, password=password)
         return cls(host, *args, **kwargs)
 
     def __init__(
         self,
         host: str,
-        auth: Optional[RequestsAuth] = None,
-        last_event_id: Optional[str] = None,
-        event_source_config: Optional[EventSourceConfig] = None,
+        auth: RequestsAuth | None = None,
+        last_event_id: str | None = None,
+        event_source_config: EventSourceConfig | None = None,
     ) -> None:
         self._host: str = host
-        self._auth: Optional[RequestsAuth] = auth
-        self._last_event_id: Optional[str] = last_event_id
+        self._auth: RequestsAuth | None = auth
+        self._last_event_id: str | None = last_event_id
         self._event_source_config: EventSourceConfig = (
             event_source_config or EventSourceConfig()
         )
-        self._events: Optional[sseclient.SSEClient] = None
+        self._events: sseclient.SSEClient | None = None
 
     @property
     def events(self) -> Generator[Event, None, None]:
@@ -129,14 +130,12 @@ class Client:
             or self.jmap_session.primary_accounts.submission
         )
         if not primary_account_id:
-            raise Exception("No primary account ID found")
+            raise AttributeError("No primary account ID found")
         return primary_account_id
 
-    def upload_blob(self, file_name: Union[str, Path]) -> Blob:
-        mime_type, mime_encoding = mimetypes.guess_type(file_name)
-        upload_url = self.jmap_session.upload_url.format(
-            accountId=self.account_id
-        )
+    def upload_blob(self, file_name: str | Path) -> Blob:
+        mime_type, _ = mimetypes.guess_type(file_name)
+        upload_url = self.jmap_session.upload_url.format(accountId=self.account_id)
         with open(file_name, "rb") as f:
             r = self.requests_session.post(
                 upload_url,
@@ -157,30 +156,27 @@ class Client:
     def download_attachment(
         self,
         attachment: EmailBodyPart,
-        file_name: Union[str, Path],
+        file_name: str | Path,
     ) -> None: ...  # pragma: no cover
 
     def download_attachment(
         self,
         attachment: EmailBodyPart,
-        file_name: Union[str, Path, None],
-    ) -> Optional[bytes]:
+        file_name: str | Path | None,
+    ) -> bytes | None:
         blob_url = self.jmap_session.download_url.format(
             accountId=self.account_id,
             blobId=attachment.blob_id,
             name=attachment.name,
             type=attachment.type,
         )
-        r = self.requests_session.get(
-            blob_url, stream=True, timeout=REQUEST_TIMEOUT
-        )
+        r = self.requests_session.get(blob_url, stream=True, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         if file_name:
             with open(file_name, "wb") as f:
                 f.write(r.raw.data)
             return None
-        else:
-            return r.raw.data
+        return r.raw.data
 
     @overload
     def download_email(
@@ -191,31 +187,27 @@ class Client:
     def download_email(
         self,
         email: Email,
-        file_name: Union[str, Path],
+        file_name: str | Path,
     ) -> None: ...  # pragma: no cover
 
     def download_email(
         self,
         email: Email,
-        file_name: Union[str, Path, None],
-    ) -> Optional[bytes]:
+        file_name: str | Path | None,
+    ) -> bytes | None:
         blob_url = self.jmap_session.download_url.format(
             accountId=self.account_id,
             blobId=email.blob_id,
             name="",
             type="message/rfc822",
         )
-        print(blob_url)
-        r = self.requests_session.get(
-            blob_url, stream=True, timeout=REQUEST_TIMEOUT
-        )
+        r = self.requests_session.get(blob_url, stream=True, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         if file_name:
             with open(file_name, "wb") as f:
                 f.write(r.raw.data)
             return None
-        else:
-            return r.raw.data
+        return r.raw.data
 
     @overload
     def request(
@@ -231,9 +223,7 @@ class Client:
         calls: Method,
         raise_errors: Literal[False] = False,
         single_response: Literal[False] = False,
-    ) -> Union[
-        Sequence[ResponseOrError], ResponseOrError
-    ]: ...  # pragma: no cover
+    ) -> Sequence[ResponseOrError] | ResponseOrError: ...  # pragma: no cover
 
     @overload
     def request(
@@ -249,7 +239,7 @@ class Client:
         calls: Method,
         raise_errors: Literal[True],
         single_response: Literal[False] = False,
-    ) -> Union[Sequence[Response], Response]: ...  # pragma: no cover
+    ) -> Sequence[Response] | Response: ...  # pragma: no cover
 
     @overload
     def request(
@@ -267,42 +257,38 @@ class Client:
 
     def request(
         self,
-        calls: Union[Sequence[Request], Sequence[Method], Method],
+        calls: Sequence[Request] | Sequence[Method] | Method,
         raise_errors: bool = False,
         single_response: bool = False,
-    ) -> Union[
-        Sequence[InvocationResponseOrError],
-        Sequence[InvocationResponse],
-        Union[Sequence[ResponseOrError], ResponseOrError],
-        Union[Sequence[Response], Response],
-    ]:
+    ) -> (
+        Sequence[InvocationResponseOrError]
+        | Sequence[InvocationResponse]
+        | Sequence[ResponseOrError]
+        | ResponseOrError
+        | Sequence[Response]
+        | Response
+    ):
         if isinstance(calls, list) and single_response:
             raise ValueError(
                 "single_response cannot be used with multiple JMAP request methods"
             )
         api_request = APIRequest.from_calls(self.account_id, calls)
         # Validate all requested JMAP URNs are supported by the server
-        unsupported_urns = (
-            api_request.using - self.jmap_session.capabilities.urns
-        )
+        unsupported_urns = api_request.using - self.jmap_session.capabilities.urns
         if unsupported_urns:
             log.warning(
                 "URNs in request are not in server capabilities: "
                 f"{', '.join(sorted(unsupported_urns))}"
             )
         # Execute request
-        result: Union[
-            Sequence[InvocationResponseOrError], Sequence[InvocationResponse]
-        ] = self._api_request(api_request)
+        result: Sequence[InvocationResponseOrError] | Sequence[InvocationResponse] = (
+            self._api_request(api_request)
+        )
         if raise_errors:
             if any(isinstance(r.response, errors.Error) for r in result):
-                raise ClientError(
-                    "Errors found in method responses", result=result
-                )
+                raise ClientError("Errors found in method responses", result=result)
             result = [
-                InvocationResponse(
-                    id=r.id, response=cast(Response, r.response)
-                )
+                InvocationResponse(id=r.id, response=cast("Response", r.response))
                 for r in result
             ]
         if isinstance(calls, Method):
@@ -317,9 +303,7 @@ class Client:
             return result[0].response
         return result
 
-    def _api_request(
-        self, request: APIRequest
-    ) -> Sequence[InvocationResponseOrError]:
+    def _api_request(self, request: APIRequest) -> Sequence[InvocationResponseOrError]:
         raw_request = request.to_json()
         log.debug(f"Sending JMAP request {raw_request}")
         r = self.requests_session.post(

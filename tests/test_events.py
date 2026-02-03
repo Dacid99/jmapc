@@ -1,11 +1,16 @@
+from __future__ import annotations
+
 import json
-from collections.abc import Iterable
-from typing import Optional
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 from unittest import mock
 
 import pytest
 import responses
 import sseclient
+
 from jmaplib import Client, Event, EventSourceConfig, StateChange, TypeState
 
 from .data import make_session_response
@@ -42,9 +47,7 @@ def mock_sseclient() -> Iterable[mock.MagicMock]:
         (
             "https://jmap-api.localhost/events/{types}/{closeafter}/{ping}",
             "https://jmap-api.localhost/events/Email,CalendarEvent/state/37",
-            EventSourceConfig(
-                types="Email,CalendarEvent", closeafter="state", ping=37
-            ),
+            EventSourceConfig(types="Email,CalendarEvent", closeafter="state", ping=37),
         ),
         (
             "https://jmap-api.localhost/events/{ping}",
@@ -67,7 +70,7 @@ def test_event_source_url(
     mock_sseclient: mock.MagicMock,
     event_source_url: str,
     expected_call_url: str,
-    event_source_config: Optional[EventSourceConfig],
+    event_source_config: EventSourceConfig | None,
 ) -> None:
     client = Client(
         host="jmap-example.localhost",

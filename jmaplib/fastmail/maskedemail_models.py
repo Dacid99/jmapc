@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import TYPE_CHECKING
 
 from dataclasses_json import config
 
-from ..serializer import Model, datetime_decode, datetime_encode
+from jmaplib.serializer import Model, datetime_decode, datetime_encode
+
+if TYPE_CHECKING:
+    from datetime import datetime
 
 
 class MaskedEmailState(Enum):
@@ -19,19 +21,19 @@ class MaskedEmailState(Enum):
 
 @dataclass
 class MaskedEmail(Model):
-    id: Optional[str] = None
-    email: Optional[str] = None
-    state: Optional[MaskedEmailState] = None
-    for_domain: Optional[str] = None
-    description: Optional[str] = None
-    last_message_at: Optional[datetime] = field(
+    id: str | None = None
+    email: str | None = None
+    state: MaskedEmailState | None = None
+    for_domain: str | None = None
+    description: str | None = None
+    last_message_at: datetime | None = field(
         default=None,
         metadata=config(encoder=datetime_encode, decoder=datetime_decode),
     )
-    created_at: Optional[datetime] = field(
+    created_at: datetime | None = field(
         default=None,
         metadata=config(encoder=datetime_encode, decoder=datetime_decode),
     )
-    created_by: Optional[str] = None
-    url: Optional[str] = None
-    email_prefix: Optional[str] = None
+    created_by: str | None = None
+    url: str | None = None
+    email_prefix: str | None = None

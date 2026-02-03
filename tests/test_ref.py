@@ -1,4 +1,5 @@
 import pytest
+
 from jmaplib import Ref, ResultReference
 from jmaplib.methods import Invocation, MailboxGet, MailboxQuery
 
@@ -24,9 +25,7 @@ def test_ref_with_no_method_match(invalid_ref: Ref) -> None:
     )
     with pytest.raises(IndexError):
         method.to_dict(
-            method_calls_slice=[
-                Invocation(id="0.example", method=MailboxGet(ids=[]))
-            ]
+            method_calls_slice=[Invocation(id="0.example", method=MailboxGet(ids=[]))]
         )
 
 

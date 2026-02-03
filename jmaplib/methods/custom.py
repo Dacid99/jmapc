@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 from .base import MethodWithAccount, ResponseWithAccount
 
@@ -13,14 +13,14 @@ class CustomMethod(MethodWithAccount):
         self.using = set()
 
     def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
-        return self.data or dict()
+        return self.data or {}
 
-    data: Optional[dict[str, Any]] = None
+    data: dict[str, Any] | None = None
 
 
 @dataclass
 class CustomResponse(ResponseWithAccount):
-    data: Optional[dict[str, Any]] = None
+    data: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
         if self.data and "accountId" in self.data:

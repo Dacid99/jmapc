@@ -17,7 +17,7 @@ def assert_request_return_response(
     ) -> tuple[int, dict[str, str], str]:
         assert request.headers["Content-Type"] == "application/json"
         assert json.loads(request.body or "{}") == expected_request
-        return (200, dict(), json.dumps(response))
+        return (200, {}, json.dumps(response))
 
     return functools.partial(_response_callback, expected_request, response)
 

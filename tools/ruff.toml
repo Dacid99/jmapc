@@ -33,7 +33,6 @@ select = [
   "EXE",  # flake8-executable
   "F",    # pyflakes
   "FA",   # flake8-future-annotations
-  "FBT",  # flake8-boolean-trap
   "FLY",  # pyflint
   "FURB", # refurb
   "G",    # flake8-logging-format
@@ -68,20 +67,25 @@ select = [
   "YTT",  # flake8-2020
 ]
 ignore = [
+  "ANN401", # allow Any types
   "ARG001",  # allow unaccessed
   "ARG002",  # allow unaccessed args
   "COM812",  # trailing comma, redundant with `black`
+  "D10",    # don't enforce docstrings right now
   "D202",    # allow blank line after function docstring
   "D203",    # no blank line before class docstring
   "D205",    # docstring summary can span more than one line
   "D401",    # docstring does not need to be imperative
   "D417",    # must be disabled for google style docs
   "ISC003", # prefer explicit string concat over implicit concat
+  "N818",    # errors are named according to spec
   "N999",    # module names can be PascalCase too
   "PLR09",   # we have our own complexity rules
+  "PT011",   # allow pytest.raises with any exc type
   "TRY003",  # error messages can be set up outside of the exception class
 ]
 external = [ "WPS" ]
+dummy-variable-rgx = '^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?)|args|kwargs)$'
 
 mccabe.max-complexity = 8
 
@@ -104,9 +108,12 @@ allow-dict-calls-with-keyword-arguments = true
 notice-rgx = ""
 
 [lint.flake8-pytest-style]
-parametrize-names-type = "csv"
+parametrize-names-type = "list"
 parametrize-values-row-type = "tuple"
 parametrize-values-type = "list"
+
+[lint.flake8-builtins]
+ignorelist = ["id"]
 
 [lint.per-file-ignores]
 "/**/tests/**" = [  # ignores for all test files
@@ -118,11 +125,18 @@ parametrize-values-type = "list"
   "N806",  # class names must be allowed as part of mock names
   "TRY003",# error messages can be put directly
   "ARG005",# lambdas may have unused args
+  "S101", # asserts
+  "D", # no docs in tests
+]
+"/**/examples/**/*.py" = [  # extend ignores for example scripts
+  "T201", # allow print
+  "ERA001", # code comments
+  "S101", # asserts
+  "TRY002", # use of Exception
 ]
 
 [lint.extend-per-file-ignores]
 "/**/tests/**/test_**.py" = [  # extend ignores for test_* files, so excluding conftests
-  "S101", # asserts
   "S106", # allow setting random passwords
   "F401", # unused import
   "F811", # redefinition of unused

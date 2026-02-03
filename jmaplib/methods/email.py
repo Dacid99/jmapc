@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import TYPE_CHECKING, ClassVar
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import Email, EmailQueryFilter
+from jmaplib import constants
+
 from .base import (
     Changes,
     ChangesResponse,
@@ -22,10 +22,13 @@ from .base import (
     SetResponse,
 )
 
+if TYPE_CHECKING:
+    from jmaplib.models import Email, EmailQueryFilter
+
 
 class EmailBase:
-    method_namespace: Optional[str] = "Email"
-    using = {constants.JMAP_URN_MAIL}
+    method_namespace: str | None = "Email"
+    using: ClassVar[set[str]] = {constants.JMAP_URN_MAIL}
 
 
 @dataclass
@@ -40,23 +43,23 @@ class EmailChangesResponse(EmailBase, ChangesResponse):
 
 @dataclass
 class EmailCopy(EmailBase, Copy):
-    create: Optional[dict[str, Email]] = None
+    create: dict[str, Email] | None = None
 
 
 @dataclass
 class EmailCopyResponse(EmailBase, CopyResponse):
-    created: Optional[dict[str, Email]] = None
+    created: dict[str, Email] | None = None
 
 
 @dataclass
 class EmailGet(EmailBase, Get):
-    body_properties: Optional[list[str]] = None
-    fetch_text_body_values: Optional[bool] = None
-    fetch_html_body_values: Optional[bool] = field(
+    body_properties: list[str] | None = None
+    fetch_text_body_values: bool | None = None
+    fetch_html_body_values: bool | None = field(
         metadata=config(field_name="fetchHTMLBodyValues"), default=None
     )
-    fetch_all_body_values: Optional[bool] = None
-    max_body_value_bytes: Optional[int] = None
+    fetch_all_body_values: bool | None = None
+    max_body_value_bytes: int | None = None
 
 
 @dataclass
@@ -66,8 +69,8 @@ class EmailGetResponse(EmailBase, GetResponse):
 
 @dataclass
 class EmailQuery(EmailBase, Query):
-    filter: Optional[EmailQueryFilter] = None
-    collapse_threads: Optional[bool] = None
+    filter: EmailQueryFilter | None = None
+    collapse_threads: bool | None = None
 
 
 @dataclass
@@ -77,8 +80,8 @@ class EmailQueryResponse(EmailBase, QueryResponse):
 
 @dataclass
 class EmailQueryChanges(EmailBase, QueryChanges):
-    filter: Optional[EmailQueryFilter] = None
-    collapse_threads: Optional[bool] = None
+    filter: EmailQueryFilter | None = None
+    collapse_threads: bool | None = None
 
 
 @dataclass
@@ -88,10 +91,10 @@ class EmailQueryChangesResponse(EmailBase, QueryChangesResponse):
 
 @dataclass
 class EmailSet(EmailBase, Set):
-    create: Optional[dict[str, Email]] = None
+    create: dict[str, Email] | None = None
 
 
 @dataclass
 class EmailSetResponse(EmailBase, SetResponse):
-    created: Optional[dict[str, Optional[Email]]]
-    updated: Optional[dict[str, Optional[Email]]]
+    created: dict[str, Email | None] | None
+    updated: dict[str, Email | None] | None
