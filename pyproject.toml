@@ -54,6 +54,7 @@ responses = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 myst-parser = "*"
+doc8 = { version = "*", python = "^3.10" }
 
 [tool.poetry.group.docs.dependencies]
 sphinx = "*"
