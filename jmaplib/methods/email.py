@@ -6,7 +6,7 @@ from typing import Optional
 from dataclasses_json import config
 
 from .. import constants
-from ..models import Email, EmailQueryFilter
+from ..models import Email, EmailImport, EmailQueryFilter
 from .base import (
     Changes,
     ChangesResponse,
@@ -14,11 +14,14 @@ from .base import (
     CopyResponse,
     Get,
     GetResponse,
+    MethodWithAccount,
     Query,
     QueryChanges,
     QueryChangesResponse,
     QueryResponse,
+    ResponseWithAccount,
     Set,
+    SetError,
     SetResponse,
 )
 
@@ -36,6 +39,38 @@ class EmailChanges(EmailBase, Changes):
 @dataclass
 class EmailChangesResponse(EmailBase, ChangesResponse):
     pass
+
+
+class EmailImportMethod:
+    method_type: str | None = "import"
+
+
+@dataclass
+class EmailImportRequest(EmailBase, EmailImportMethod, MethodWithAccount):
+    """Email/import request.
+
+    See https://datatracker.ietf.org/doc/html/rfc8621#section-4.8
+    """
+
+    emails: dict[str, EmailImport] = field(default_factory=dict)
+    if_in_state: str | None = field(
+        metadata=config(field_name="ifInState"), default=None
+    )
+
+
+@dataclass
+class EmailImportResponse(EmailBase, EmailImportMethod, ResponseWithAccount):
+    """Email/import response.
+
+    See https://datatracker.ietf.org/doc/html/rfc8621#section-4.8
+    """
+
+    old_state: str | None = field(metadata=config(field_name="oldState"))
+    new_state: str = field(metadata=config(field_name="newState"))
+    created: dict[str, Email] | None = None
+    not_created: dict[str, SetError] | None = field(
+        metadata=config(field_name="notCreated"), default=None
+    )
 
 
 @dataclass

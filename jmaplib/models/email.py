@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional, Union, Final
+from typing import Final, Optional, Union
 
 from dataclasses_json import config
 
@@ -97,9 +97,7 @@ class EmailQueryFilterCondition(Model):
     not_keyword: Optional[StrOrRef] = None
     has_attachment: Optional[bool] = None
     text: Optional[StrOrRef] = None
-    mail_from: Optional[str] = field(
-        metadata=config(field_name="from"), default=None
-    )
+    mail_from: Optional[str] = field(metadata=config(field_name="from"), default=None)
     to: Optional[StrOrRef] = None
     cc: Optional[StrOrRef] = None
     bcc: Optional[StrOrRef] = None
@@ -111,6 +109,23 @@ class EmailQueryFilterCondition(Model):
 class EmailQueryFilterOperator(Model):
     operator: Operator
     conditions: list[EmailQueryFilter]
+
+
+@dataclass
+class EmailImport(Model):
+    """Represents an Email to be imported via the Email/import JMAP method."""
+
+    blob_id: str = field(metadata=config(field_name="blobId"))
+    mailbox_ids: dict[str, bool] = field(metadata=config(field_name="mailboxIds"))
+    keywords: dict[str, bool] | None = None
+    received_at: datetime | None = field(
+        default=None,
+        metadata=config(
+            encoder=datetime_encode,
+            decoder=datetime_decode,
+            field_name="receivedAt",
+        ),
+    )
 
 
 class EmailProperties:

@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 import requests
 import responses
+
 from jmaplib import Blob, Client, ClientError, Email, EmailBodyPart, constants
 from jmaplib.auth import BearerAuth
 from jmaplib.methods import (
@@ -26,9 +27,7 @@ from jmaplib.session import (
 from .data import make_session_response
 from .utils import expect_jmap_call
 
-echo_test_data = dict(
-    who="Ness", goods=["Mr. Saturn coin", "Hall of Fame Bat"]
-)
+echo_test_data = dict(who="Ness", goods=["Mr. Saturn coin", "Hall of Fame Bat"])
 
 
 @pytest.mark.parametrize(
@@ -43,9 +42,7 @@ echo_test_data = dict(
         Client("jmap-example.localhost", auth=("ness", "pk_fire")),
         Client(
             "jmap-example.localhost",
-            auth=requests.auth.HTTPBasicAuth(
-                username="ness", password="pk_fire"
-            ),
+            auth=requests.auth.HTTPBasicAuth(username="ness", password="pk_fire"),
         ),
         Client("jmap-example.localhost", auth=BearerAuth("ness__pk_fire")),
     ),
@@ -188,9 +185,7 @@ def test_client_request_updated_session(
         [CoreEcho(data=echo_test_data), MailboxGet(ids=Ref("/example"))],
         [
             Invocation(method=CoreEcho(data=echo_test_data), id="0.Core/echo"),
-            Invocation(
-                method=MailboxGet(ids=Ref(path="/example")), id="1.Mailbox/get"
-            ),
+            Invocation(method=MailboxGet(ids=Ref(path="/example")), id="1.Mailbox/get"),
         ],
         [
             Invocation(method=CoreEcho(data=echo_test_data), id="0.Core/echo"),
@@ -302,15 +297,9 @@ def test_client_request_single(
     expect_jmap_call(http_responses, expected_request, response)
     expected_response = CoreEchoResponse(data=echo_test_data)
     if raise_errors:
-        assert (
-            client.request(method_params, raise_errors=True)
-            == expected_response
-        )
+        assert client.request(method_params, raise_errors=True) == expected_response
     else:
-        assert (
-            client.request(method_params, raise_errors=False)
-            == expected_response
-        )
+        assert client.request(method_params, raise_errors=False) == expected_response
 
 
 def test_client_request_single_with_multiple_responses(
@@ -382,8 +371,7 @@ def test_client_request_single_with_multiple_responses_error(
     with pytest.raises(ClientError) as e:
         client.request(method_params, single_response=True)
     assert (
-        str(e.value)
-        == "2 method responses received for single method call Core/echo"
+        str(e.value) == "2 method responses received for single method call Core/echo"
     )
     assert e.value.result == 2 * [
         InvocationResponseOrError(
@@ -432,9 +420,7 @@ def test_upload_blob(
         body=json.dumps(upload_response),
     )
     response = client.upload_blob(source_file)
-    assert response == Blob(
-        id="C2187", type="text/plain", size=len(blob_content)
-    )
+    assert response == Blob(id="C2187", type="text/plain", size=len(blob_content))
 
 
 def test_download_attachment(
@@ -486,3 +472,156 @@ def test_download_email(
         dest_file,
     )
     assert dest_file.read_text() == blob_content
+
+
+def test_email_import(client: Client, http_responses: responses.RequestsMock) -> None:
+    """Test importing an email using the Email/import JMAP method."""
+    # Test data
+    blob_id = "B123456789"
+    mailbox_id = "M98765432"
+    keywords = {"$seen": True, "$flagged": True}
+
+    # Expected request
+    expected_request = {
+        "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
+        "methodCalls": [
+            [
+                "Email/import",
+                {
+                    "accountId": "u1138",
+                    "emails": {
+                        "import1": {
+                            "blobId": blob_id,
+                            "mailboxIds": {mailbox_id: True},
+                            "keywords": keywords,
+                        }
+                    },
+                },
+                "single.Email/import",
+            ]
+        ],
+    }
+
+    # Server response
+    response = {
+        "methodResponses": [
+            [
+                "Email/import",
+                {
+                    "accountId": "u1138",
+                    "oldState": "state1",
+                    "newState": "state2",
+                    "created": {
+                        "import1": {
+                            "id": "Eabcdef123456",
+                            "blobId": blob_id,
+                            "threadId": "Tabcdef123456",
+                            "size": 2048,
+                        }
+                    },
+                },
+                "single.Email/import",
+            ]
+        ]
+    }
+
+    # Setup mock response
+    expect_jmap_call(http_responses, expected_request, response)
+
+    # Execute import
+    result = client.import_email(
+        blob_id=blob_id,
+        mailbox_ids={mailbox_id: True},
+        keywords=keywords,
+        # We're not sending received_at in the request,
+        # so don't include it in the call either
+    )
+
+    # Verify result
+    assert result.account_id == "u1138"
+    assert result.old_state == "state1"
+    assert result.new_state == "state2"
+    assert result.created is not None
+    assert "import1" in result.created
+    assert result.created["import1"].id == "Eabcdef123456"
+    assert result.created["import1"].blob_id == blob_id
+    assert result.created["import1"].thread_id == "Tabcdef123456"
+    assert result.created["import1"].size == 2048
+
+
+def test_email_import_with_received_at(
+    client: Client, http_responses: responses.RequestsMock
+) -> None:
+    """Test importing an email with receivedAt parameter."""
+    # Test data
+    blob_id = "B123456789"
+    mailbox_id = "M98765432"
+    keywords = {"$seen": True, "$flagged": True}
+    received_at = "2023-01-15T14:30:00Z"
+
+    # Expected request
+    expected_request = {
+        "using": ["urn:ietf:params:jmap:core", "urn:ietf:params:jmap:mail"],
+        "methodCalls": [
+            [
+                "Email/import",
+                {
+                    "accountId": "u1138",
+                    "emails": {
+                        "import1": {
+                            "blobId": blob_id,
+                            "mailboxIds": {mailbox_id: True},
+                            "keywords": keywords,
+                            "receivedAt": "2023-01-15T14:30:00Z",
+                        }
+                    },
+                },
+                "single.Email/import",
+            ]
+        ],
+    }
+
+    # Server response
+    response = {
+        "methodResponses": [
+            [
+                "Email/import",
+                {
+                    "accountId": "u1138",
+                    "oldState": "state1",
+                    "newState": "state2",
+                    "created": {
+                        "import1": {
+                            "id": "Eabcdef123456",
+                            "blobId": blob_id,
+                            "threadId": "Tabcdef123456",
+                            "size": 2048,
+                        }
+                    },
+                },
+                "single.Email/import",
+            ]
+        ]
+    }
+
+    # Setup mock response
+    expect_jmap_call(http_responses, expected_request, response)
+
+    # Execute import with received_at
+    result = client.import_email(
+        blob_id=blob_id,
+        mailbox_ids={mailbox_id: True},
+        keywords=keywords,
+        received_at=received_at,
+    )
+
+    # Verify result
+    assert result.account_id == "u1138"
+    assert result.old_state == "state1"
+    assert result.new_state == "state2"
+    assert result.created is not None
+    assert "import1" in result.created
+    assert result.created["import1"].id == "Eabcdef123456"
+    assert result.created["import1"].blob_id == blob_id
+    assert result.created["import1"].thread_id == "Tabcdef123456"
+    assert result.created["import1"].size == 2048
