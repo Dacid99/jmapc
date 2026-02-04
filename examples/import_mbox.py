@@ -8,11 +8,11 @@ import math
 import os
 import sys
 import tempfile
-from datetime import datetime
+from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 
-from jmapc import Blob, Client, MailboxQueryFilterCondition, Ref
-from jmapc.methods import MailboxGet, MailboxGetResponse, MailboxQuery
+from jmaplib import Blob, Client, MailboxQueryFilterCondition, Ref
+from jmaplib.methods import MailboxGet, MailboxGetResponse, MailboxQuery
 
 
 def main() -> None:
@@ -121,7 +121,7 @@ def extract_received_at(message: mailbox.Message) -> str:
         return date.isoformat()
 
     # If we can't parse the date, use current time
-    return datetime.now().isoformat()
+    return datetime.now(tz=timezone.utc).isoformat()
 
 
 def import_message(
@@ -184,7 +184,7 @@ def format_size(num: float) -> str:
     if num == 1:
         return "1 byte"
     units = ["bytes", "KB", "MB", "GB", "TB", "PB"]
-    scale = int(math.floor(math.log(num, 1024)))
+    scale = math.floor(math.log(num, 1024))
     rounded = round(num / (1024**scale))
     if not scale:
         return f"{rounded} {units[scale]}"
@@ -196,8 +196,7 @@ def upload_blob_data(client: Client, data: bytes) -> Blob:
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(data)
         temp_name = temp.name
-        blob = client.upload_blob(temp_name)
-        return blob
+        return client.upload_blob(temp_name)
 
 
 if __name__ == "__main__":

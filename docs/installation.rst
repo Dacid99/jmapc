@@ -7,7 +7,7 @@ Requirements
 jmaplib requires Python 3.9 or later.
 
 Installing from PyPI
----------------------
+--------------------
 
 The easiest way to install jmaplib is from PyPI using pip:
 

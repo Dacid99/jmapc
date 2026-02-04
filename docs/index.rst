@@ -1,5 +1,5 @@
-jmaplib: A JMAP client library for Python
-========================================
+jmaplib: A JMAP protocol client for Python
+==========================================
 
 .. image:: https://img.shields.io/pypi/v/jmaplib
    :target: https://pypi.org/project/jmaplib/
