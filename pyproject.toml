@@ -55,6 +55,11 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 myst-parser = "*"
 
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinx-rtd-theme = "*"
+myst-parser = "*"
+
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"

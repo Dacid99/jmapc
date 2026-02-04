@@ -4,11 +4,10 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.abspath(".."))
 
-from jmapc.__version__ import __version__
+from jmaplib.__version__ import __version__
 
-
-project = "jmapc"
-author = "Stephen Kent"
+project = "jmaplib"
+author = "David Aderbauer"
 copyright = f"{datetime.now().year}, {author}"
 
 version = __version__
