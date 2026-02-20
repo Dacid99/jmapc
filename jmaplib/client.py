@@ -4,11 +4,9 @@ import functools
 import mimetypes
 from collections.abc import Generator, Sequence
 from dataclasses import asdict, dataclass
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Literal, Optional, TypeVar, Union, cast, overload
+from typing import Any, Literal, TypeVar, Union, cast, overload
 
-import dateutil.parser
 import requests
 import sseclient
 from typing_extensions import Self
@@ -18,8 +16,6 @@ from .api import APIRequest, APIResponse
 from .auth import BearerAuth
 from .logging import log
 from .methods import (
-    EmailImportRequest,
-    EmailImportResponse,
     InvocationResponse,
     InvocationResponseOrError,
     Method,
@@ -27,7 +23,7 @@ from .methods import (
     Response,
     ResponseOrError,
 )
-from .models import Blob, Email, EmailBodyPart, EmailImport, Event
+from .models import Blob, Email, EmailBodyPart, Event
 from .session import Session
 
 RequestsAuth = Union[requests.auth.AuthBase, tuple[str, str]]
@@ -47,7 +43,7 @@ class ClientError(RuntimeError):
     def __init__(
         self,
         *args: Any,
-        result: Sequence[Union[InvocationResponse, InvocationResponseOrError]],
+        result: Sequence[InvocationResponse | InvocationResponseOrError],
         **kwargs: Any,
     ):
         super().__init__(*args, **kwargs)
@@ -81,17 +77,17 @@ class Client:
     def __init__(
         self,
         host: str,
-        auth: Optional[RequestsAuth] = None,
-        last_event_id: Optional[str] = None,
-        event_source_config: Optional[EventSourceConfig] = None,
+        auth: RequestsAuth | None = None,
+        last_event_id: str | None = None,
+        event_source_config: EventSourceConfig | None = None,
     ) -> None:
         self._host: str = host
-        self._auth: Optional[RequestsAuth] = auth
-        self._last_event_id: Optional[str] = last_event_id
+        self._auth: RequestsAuth | None = auth
+        self._last_event_id: str | None = last_event_id
         self._event_source_config: EventSourceConfig = (
             event_source_config or EventSourceConfig()
         )
-        self._events: Optional[sseclient.SSEClient] = None
+        self._events: sseclient.SSEClient | None = None
 
     @property
     def events(self) -> Generator[Event, None, None]:
@@ -135,7 +131,7 @@ class Client:
             raise Exception("No primary account ID found")
         return primary_account_id
 
-    def upload_blob(self, file_name: Union[str, Path]) -> Blob:
+    def upload_blob(self, file_name: str | Path) -> Blob:
         mime_type, mime_encoding = mimetypes.guess_type(file_name)
         upload_url = self.jmap_session.upload_url.format(accountId=self.account_id)
         with open(file_name, "rb") as f:
@@ -158,14 +154,14 @@ class Client:
     def download_attachment(
         self,
         attachment: EmailBodyPart,
-        file_name: Union[str, Path],
+        file_name: str | Path,
     ) -> None: ...  # pragma: no cover
 
     def download_attachment(
         self,
         attachment: EmailBodyPart,
-        file_name: Union[str, Path, None],
-    ) -> Optional[bytes]:
+        file_name: str | Path | None,
+    ) -> bytes | None:
         blob_url = self.jmap_session.download_url.format(
             accountId=self.account_id,
             blobId=attachment.blob_id,
@@ -189,14 +185,14 @@ class Client:
     def download_email(
         self,
         email: Email,
-        file_name: Union[str, Path],
+        file_name: str | Path,
     ) -> None: ...  # pragma: no cover
 
     def download_email(
         self,
         email: Email,
-        file_name: Union[str, Path, None],
-    ) -> Optional[bytes]:
+        file_name: str | Path | None,
+    ) -> bytes | None:
         blob_url = self.jmap_session.download_url.format(
             accountId=self.account_id,
             blobId=email.blob_id,
@@ -212,46 +208,6 @@ class Client:
             return None
         return r.raw.data
 
-    def import_email(
-        self,
-        blob_id: str,
-        mailbox_ids: dict[str, bool],
-        keywords: dict[str, bool] | None = None,
-        received_at: str | datetime | None = None,
-        if_in_state: str | None = None,
-    ) -> EmailImportResponse:
-        """Import an email into the mailbox using the Email/import JMAP method.
-
-        Args:
-            blob_id: The ID of the blob containing the raw message to import
-            mailbox_ids: The mailbox IDs to assign the email to
-            keywords: Optional keywords to apply to the email
-            received_at: Optional receivedAt date to set (as ISO format string)
-            if_in_state: Only import if account is currently in given state
-
-        Returns:
-            The EmailImportResponse containing details of the imported email
-        """
-        # Create EmailImport object
-        email_import = EmailImport(
-            blob_id=blob_id,
-            mailbox_ids=mailbox_ids,
-            keywords=keywords,
-        )
-        if isinstance(received_at, str):
-            received_at = dateutil.parser.isoparse(received_at)
-        if received_at:
-            email_import.received_at = received_at
-
-        # Create the request
-        request = EmailImportRequest(
-            emails={"import1": email_import}, if_in_state=if_in_state
-        )
-        # Add the account ID
-        request.account_id = self.account_id
-
-        return cast("EmailImportResponse", self.request(request))
-
     @overload
     def request(
         self,
@@ -266,7 +222,7 @@ class Client:
         calls: Method,
         raise_errors: Literal[False] = False,
         single_response: Literal[False] = False,
-    ) -> Union[Sequence[ResponseOrError], ResponseOrError]: ...  # pragma: no cover
+    ) -> Sequence[ResponseOrError] | ResponseOrError: ...  # pragma: no cover
 
     @overload
     def request(
@@ -282,7 +238,7 @@ class Client:
         calls: Method,
         raise_errors: Literal[True],
         single_response: Literal[False] = False,
-    ) -> Union[Sequence[Response], Response]: ...  # pragma: no cover
+    ) -> Sequence[Response] | Response: ...  # pragma: no cover
 
     @overload
     def request(
@@ -300,15 +256,17 @@ class Client:
 
     def request(
         self,
-        calls: Union[Sequence[Request], Sequence[Method], Method],
+        calls: Sequence[Request] | Sequence[Method] | Method,
         raise_errors: bool = False,
         single_response: bool = False,
-    ) -> Union[
-        Sequence[InvocationResponseOrError],
-        Sequence[InvocationResponse],
-        Union[Sequence[ResponseOrError], ResponseOrError],
-        Union[Sequence[Response], Response],
-    ]:
+    ) -> (
+        Sequence[InvocationResponseOrError]
+        | Sequence[InvocationResponse]
+        | Sequence[ResponseOrError]
+        | ResponseOrError
+        | Sequence[Response]
+        | Response
+    ):
         if isinstance(calls, list) and single_response:
             raise ValueError(
                 "single_response cannot be used with multiple JMAP request methods"
@@ -322,9 +280,9 @@ class Client:
                 f"{', '.join(sorted(unsupported_urns))}"
             )
         # Execute request
-        result: Union[
-            Sequence[InvocationResponseOrError], Sequence[InvocationResponse]
-        ] = self._api_request(api_request)
+        result: Sequence[InvocationResponseOrError] | Sequence[InvocationResponse] = (
+            self._api_request(api_request)
+        )
         if raise_errors:
             if any(isinstance(r.response, errors.Error) for r in result):
                 raise ClientError("Errors found in method responses", result=result)
