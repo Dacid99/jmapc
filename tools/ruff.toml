@@ -1,7 +1,7 @@
 preview = false
 fix = true
 unsafe-fixes = false
-target-version = "py39"
+target-version = "py310"
 line-length = 88  # consistent with blacks default
 extend-exclude = ["docs", "tools", ".vscode", ".zed", ".pytest_cache", "__pycache__"]
 output-format = "full"
