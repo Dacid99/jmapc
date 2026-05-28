@@ -14,8 +14,8 @@ keywords = [
     "fastmail",
 ]
 license = "GPL-3.0-or-later"
-license-files = ["LICENSE", "docs/LICENSE"]
-authors = [ { name = "David Aderbauer", email = "Dacid99@Dacid99.net" } ]
+license-files = ["LICEN[CS]E*"]
+authors = [ { name = "David Aderbauer", email = "no@email.org" } ]
 readme = "README.md"
 repository = "https://github.com/Dacid99/jmaplib"
 classifiers = [
@@ -32,6 +32,13 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.15",
     "Typing :: Typed",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
 ]
 requires-python = ">=3.10,<4.0"
 dependencies = [
@@ -41,9 +48,13 @@ dependencies = [
     "requests",
     "sseclient",
 ]
-include = [
-    "examples",
-]
+
+[project.urls]
+Homepage = "https://github.com/Dacid99/jmaplib"
+Issues = "https://github.com/Dacid99/jmaplib/-/issues"
+Documentation = "https://github.com/Dacid99/jmaplib/-/blob/main/README.md"
+Repository = "https://github.com/Dacid99/jmaplib.git"
+Changelog = "https://github.com/Dacid99/jmaplib/-/blob/main/CHANGELOG.md"
 
 [tool.poetry]
 requires-poetry = ">=2.0"
