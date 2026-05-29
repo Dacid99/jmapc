@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from .. import constants
+from jmaplib import constants
+
 from .base import Method, Response
 
 

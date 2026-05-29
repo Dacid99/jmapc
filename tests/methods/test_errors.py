@@ -5,7 +5,7 @@ import responses
 from jmaplib import Client, ClientError, Error, errors
 from jmaplib.methods import CoreEcho, InvocationResponseOrError
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 @pytest.mark.parametrize("raise_errors", [True, False])

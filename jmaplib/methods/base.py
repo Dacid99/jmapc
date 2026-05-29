@@ -4,9 +4,9 @@ import contextlib
 from dataclasses import dataclass, field
 from typing import Any, Union, cast
 
-from ..errors import Error
-from ..models import AddedItem, Comparator, ListOrRef, SetError, StrOrRef
-from ..serializer import Model
+from jmaplib.errors import Error
+from jmaplib.models import AddedItem, Comparator, ListOrRef, SetError, StrOrRef
+from jmaplib.serializer import Model
 
 
 class MethodBase(Model):

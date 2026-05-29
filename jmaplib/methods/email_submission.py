@@ -5,8 +5,9 @@ from typing import Any
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import EmailSubmission, EmailSubmissionQueryFilter
+from jmaplib import constants
+from jmaplib.models import EmailSubmission, EmailSubmissionQueryFilter
+
 from .base import (
     Changes,
     ChangesResponse,

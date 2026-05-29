@@ -4,8 +4,9 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import Mailbox, MailboxQueryFilter
+from jmaplib import constants
+from jmaplib.models import Mailbox, MailboxQueryFilter
+
 from .base import (
     Changes,
     ChangesResponse,

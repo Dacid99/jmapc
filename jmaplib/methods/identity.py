@@ -4,8 +4,9 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import Identity, ListOrRef
+from jmaplib import constants
+from jmaplib.models import Identity, ListOrRef
+
 from .base import Changes, ChangesResponse, Get, GetResponse, Set, SetResponse
 
 

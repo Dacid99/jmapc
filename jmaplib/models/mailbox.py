@@ -5,7 +5,8 @@ from typing import Union
 
 from dataclasses_json import config
 
-from ..serializer import Model
+from jmaplib.serializer import Model
+
 from .models import Operator, StrOrRef
 
 

@@ -6,8 +6,8 @@ from typing import TypeVar, Union
 
 from dataclasses_json import config
 
-from ..ref import Ref, ResultReference
-from ..serializer import Model
+from jmaplib.ref import Ref, ResultReference
+from jmaplib.serializer import Model
 
 T = TypeVar("T")
 StrOrRef = Union[str, ResultReference, Ref]

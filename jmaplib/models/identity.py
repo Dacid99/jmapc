@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ..serializer import Model
+from jmaplib.serializer import Model
+
 from .models import EmailAddress
 
 

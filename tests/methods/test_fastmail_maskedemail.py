@@ -11,7 +11,7 @@ from jmaplib.fastmail import (
     MaskedEmailState,
 )
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_maskedemail_get(

@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 import sseclient
 from dataclasses_json import config
 
-from ..serializer import Model
+from jmaplib.serializer import Model
 
 
 @dataclass

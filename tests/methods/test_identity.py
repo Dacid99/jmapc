@@ -9,7 +9,7 @@ from jmaplib.methods import (
     IdentitySetResponse,
 )
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_identity_changes(

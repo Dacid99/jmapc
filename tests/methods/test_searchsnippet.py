@@ -2,7 +2,7 @@ import responses
 from jmaplib import Client, EmailQueryFilterCondition, SearchSnippet
 from jmaplib.methods import SearchSnippetGet, SearchSnippetGetResponse
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_search_snippet_get(

@@ -8,7 +8,7 @@ from jmaplib.methods import (
     MailboxGetResponse,
 )
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_custom_method(

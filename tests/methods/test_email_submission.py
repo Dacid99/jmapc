@@ -25,7 +25,7 @@ from jmaplib.methods import (
     EmailSubmissionSetResponse,
 )
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 expected_request_create = {
     "emailToSend": {

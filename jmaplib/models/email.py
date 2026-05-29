@@ -6,7 +6,8 @@ from typing import Final, Union
 
 from dataclasses_json import config
 
-from ..serializer import Model, datetime_decode, datetime_encode
+from jmaplib.serializer import Model, datetime_decode, datetime_encode
+
 from .models import EmailAddress, ListOrRef, Operator, StrOrRef
 
 

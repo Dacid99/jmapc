@@ -4,7 +4,8 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import config
 
-from ..methods.base import Get, GetResponse, Set, SetResponse
+from jmaplib.methods.base import Get, GetResponse, Set, SetResponse
+
 from .maskedemail_models import MaskedEmail
 
 URN = "https://www.fastmail.com/dev/maskedemail"

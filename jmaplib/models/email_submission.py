@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
 from typing import Union
 
 from dataclasses_json import DataClassJsonMixin, config
-from datetime import datetime
 
-from ..serializer import Model, datetime_decode, datetime_encode
+from jmaplib.serializer import Model, datetime_decode, datetime_encode
+
 from .models import Operator
 
 

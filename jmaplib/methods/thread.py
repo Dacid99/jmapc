@@ -4,8 +4,9 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import Thread
+from jmaplib import constants
+from jmaplib.models import Thread
+
 from .base import Changes, ChangesResponse, Get, GetResponse
 
 

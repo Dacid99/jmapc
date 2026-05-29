@@ -4,8 +4,9 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import config
 
-from .. import constants
-from ..models import EmailQueryFilter, ListOrRef, SearchSnippet, TypeOrRef
+from jmaplib import constants
+from jmaplib.models import EmailQueryFilter, ListOrRef, SearchSnippet, TypeOrRef
+
 from .base import Get, GetResponseWithoutState
 
 

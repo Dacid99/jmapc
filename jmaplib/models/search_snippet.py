@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..serializer import Model
+from jmaplib.serializer import Model
 
 
 @dataclass

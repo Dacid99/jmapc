@@ -27,7 +27,7 @@ from jmaplib.methods import (
     EmailSetResponse,
 )
 
-from ..utils import expect_jmap_call
+from tests.utils import expect_jmap_call
 
 
 def test_email_changes(
