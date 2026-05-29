@@ -3,10 +3,6 @@
 [![PyPI](https://img.shields.io/pypi/v/jmaplib)][pypi]
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jmaplib)][pypi]
 [![Build](https://img.shields.io/github/checks-status/Dacid99/jmaplib/main?label=build)][gh-actions]
-[![codecov](https://codecov.io/gh/Dacid99/jmaplib/branch/main/graph/badge.svg)][codecov]
-[![GitHub stars](https://img.shields.io/github/stars/Dacid99/jmaplib?style=social)][repo]
-
-[![jmaplib][logo]](#)
 
 Currently implemented:
 
@@ -52,7 +48,7 @@ poetry run examples/identity_get.py
 
 If successful, `examples/identity_get.py` should output something like:
 
-```
+```console
 Identity 12345 is for Ness at ness@onett.example.com
 Identity 67890 is for Ness at ness-alternate@onett.example.com
 ```
@@ -85,20 +81,17 @@ poetry self add poetry-pre-commit-plugin
 
 ---
 
-This project is a fork of the [jmapc client library for Python][jmapc].
+This project is a fork of the [jmaplib client library for Python][jmaplib].
 
 A big THANKYOU to its creators!
 
 Created using [cookiecutter][cookiecutter]
 
-[codecov]: https://codecov.io/gh/Dacid99/jmaplib
 [cookiecutter]: https://github.com/cookiecutter/cookiecutter
 [fastmail-maskedemail]: https://www.fastmail.com/developer/maskedemail/
 [gh-actions]: https://github.com/Dacid99/jmaplib/actions?query=branch%3Amain
-[logo]: https://raw.github.com/Dacid99/jmaplib/main/img/jmaplib.png
 [jmapio]: https://jmap.io
 [pipx]: https://pypa.github.io/pipx/
 [poetry]: https://python-poetry.org/docs/#installation
 [pypi]: https://pypi.org/project/jmaplib/
-[repo]: https://github.com/Dacid99/jmaplib
-[jmapc]: https://github.com/smkent/jmapc
+[jmaplib]: https://github.com/Dacid99/jmaplib
