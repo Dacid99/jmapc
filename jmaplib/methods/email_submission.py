@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Optional
+from typing import Any
 
 from dataclasses_json import config
 
@@ -22,7 +22,7 @@ from .base import (
 
 
 class EmailSubmissionBase:
-    method_namespace: Optional[str] = "EmailSubmission"
+    method_namespace: str | None = "EmailSubmission"
     using = {constants.JMAP_URN_SUBMISSION}
 
 
@@ -48,7 +48,7 @@ class EmailSubmissionGetResponse(EmailSubmissionBase, GetResponse):
 
 @dataclass
 class EmailSubmissionQuery(EmailSubmissionBase, Query):
-    filter: Optional[EmailSubmissionQueryFilter] = None
+    filter: EmailSubmissionQueryFilter | None = None
 
 
 @dataclass
@@ -58,7 +58,7 @@ class EmailSubmissionQueryResponse(EmailSubmissionBase, QueryResponse):
 
 @dataclass
 class EmailSubmissionQueryChanges(EmailSubmissionBase, QueryChanges):
-    filter: Optional[EmailSubmissionQueryFilter] = None
+    filter: EmailSubmissionQueryFilter | None = None
 
 
 @dataclass
@@ -70,12 +70,12 @@ class EmailSubmissionQueryChangesResponse(
 
 @dataclass
 class EmailSubmissionSet(EmailSubmissionBase, Set):
-    create: Optional[dict[str, EmailSubmission]] = None
-    on_success_update_email: Optional[dict[str, Any]] = None
-    on_success_destroy_email: Optional[list[str]] = None
+    create: dict[str, EmailSubmission] | None = None
+    on_success_update_email: dict[str, Any] | None = None
+    on_success_destroy_email: list[str] | None = None
 
 
 @dataclass
 class EmailSubmissionSetResponse(EmailSubmissionBase, SetResponse):
-    created: Optional[dict[str, Optional[EmailSubmission]]]
-    updated: Optional[dict[str, Optional[EmailSubmission]]]
+    created: dict[str, EmailSubmission | None] | None
+    updated: dict[str, EmailSubmission | None] | None

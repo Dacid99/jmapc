@@ -71,6 +71,7 @@ ignore = [
   "ARG001",  # allow unaccessed
   "ARG002",  # allow unaccessed args
   "COM812",  # trailing comma, redundant with `black`
+  "D1",      # reduce number of public docstrings
   "D202",    # allow blank line after function docstring
   "D203",    # no blank line before class docstring
   "D205",    # docstring summary can span more than one line

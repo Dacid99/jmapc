@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import config
 
@@ -11,7 +10,7 @@ from .base import Changes, ChangesResponse, Get, GetResponse, Set, SetResponse
 
 
 class IdentityBase:
-    method_namespace: Optional[str] = "Identity"
+    method_namespace: str | None = "Identity"
     using = {constants.JMAP_URN_SUBMISSION}
 
 
@@ -27,7 +26,7 @@ class IdentityChangesResponse(IdentityBase, ChangesResponse):
 
 @dataclass
 class IdentityGet(IdentityBase, Get):
-    ids: Optional[ListOrRef[str]] = None
+    ids: ListOrRef[str] | None = None
 
 
 @dataclass
@@ -37,10 +36,10 @@ class IdentityGetResponse(IdentityBase, GetResponse):
 
 @dataclass
 class IdentitySet(IdentityBase, Set):
-    create: Optional[dict[str, Identity]] = None
+    create: dict[str, Identity] | None = None
 
 
 @dataclass
 class IdentitySetResponse(IdentityBase, SetResponse):
-    created: Optional[dict[str, Optional[Identity]]]
-    updated: Optional[dict[str, Optional[Identity]]]
+    created: dict[str, Identity | None] | None
+    updated: dict[str, Identity | None] | None

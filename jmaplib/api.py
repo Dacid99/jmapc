@@ -1,13 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field
 from typing import (
     Any,
-    Callable,
-    Union,
     cast,
 )
-from collections.abc import Sequence
 
 from dataclasses_json import config
 
@@ -57,7 +55,7 @@ class APIResponse(Model):
 class APIRequest(Model):
     account_id: str = field(
         repr=False,
-        metadata=config(exclude=cast(Callable[..., bool], lambda *_: True)),
+        metadata=config(exclude=cast("Callable[..., bool]", lambda *_: True)),
     )
     method_calls: list[tuple[str, Any, str]]
     using: set[str] = field(
@@ -69,7 +67,7 @@ class APIRequest(Model):
     @staticmethod
     def from_calls(
         account_id: str,
-        calls: Union[Sequence[Request], Sequence[Method], Method],
+        calls: Sequence[Request] | Sequence[Method] | Method,
     ) -> APIRequest:
         calls_list = calls if isinstance(calls, Sequence) else [calls]
         invocations: list[Invocation] = []

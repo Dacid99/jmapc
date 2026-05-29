@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import config
 
@@ -11,7 +10,7 @@ from .base import Changes, ChangesResponse, Get, GetResponse
 
 
 class ThreadBase:
-    method_namespace: Optional[str] = "Thread"
+    method_namespace: str | None = "Thread"
     using = {constants.JMAP_URN_MAIL}
 
 

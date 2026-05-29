@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import config
 
@@ -12,7 +11,7 @@ URN = "https://www.fastmail.com/dev/maskedemail"
 
 
 class MaskedEmailBase:
-    method_namespace: Optional[str] = "MaskedEmail"
+    method_namespace: str | None = "MaskedEmail"
     using = {URN}
 
 
@@ -33,5 +32,5 @@ class MaskedEmailSet(MaskedEmailBase, Set):
 
 @dataclass
 class MaskedEmailSetResponse(MaskedEmailBase, SetResponse):
-    created: Optional[dict[str, Optional[MaskedEmail]]]
-    updated: Optional[dict[str, Optional[MaskedEmail]]]
+    created: dict[str, MaskedEmail | None] | None
+    updated: dict[str, MaskedEmail | None] | None

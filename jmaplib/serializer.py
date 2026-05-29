@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import contextlib
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import dataclasses_json
 import dateutil.parser
@@ -17,7 +17,7 @@ def datetime_encode(dt: datetime) -> str:
     return f"{dt.replace(tzinfo=None).isoformat()}Z"
 
 
-def datetime_decode(value: Optional[str]) -> Optional[datetime]:
+def datetime_decode(value: str | None) -> datetime | None:
     if not value:
         return None
     return dateutil.parser.isoparse(value)
@@ -25,7 +25,7 @@ def datetime_decode(value: Optional[str]) -> Optional[datetime]:
 
 class ModelToDictPostprocessor:
     def __init__(
-        self, method_calls_slice: Optional[list[Invocation]] = None
+        self, method_calls_slice: list[Invocation] | None = None
     ) -> None:
         self.method_calls_slice = method_calls_slice
 
@@ -33,7 +33,7 @@ class ModelToDictPostprocessor:
         self,
         data: dict[str, dataclasses_json.core.Json],
     ) -> dict[str, dataclasses_json.core.Json]:
-        for key in [key for key in data.keys() if not key.startswith("#")]:
+        for key in [key for key in data if not key.startswith("#")]:
             value = data[key]
             if isinstance(value, dict):
                 if REF_SENTINEL_KEY in value:
@@ -76,7 +76,7 @@ class ModelToDictPostprocessor:
         data: dict[str, dataclasses_json.core.Json],
         key: str,
     ) -> dict[str, dataclasses_json.core.Json]:
-        ref_type = cast(dict[str, Any], data[key]).get(REF_SENTINEL_KEY)
+        ref_type = cast("dict[str, Any]", data[key]).get(REF_SENTINEL_KEY)
         if ref_type == "ResultReference":
             rr = ResultReference.from_dict(data[key])
         elif ref_type == "Ref":
@@ -120,11 +120,11 @@ class Model(dataclasses_json.DataClassJsonMixin):
     def to_dict(
         self,
         *args: Any,
-        account_id: Optional[str] = None,
-        method_calls_slice: Optional[list[Invocation]] = None,
+        account_id: str | None = None,
+        method_calls_slice: list[Invocation] | None = None,
         **kwargs: Any,
     ) -> dict[str, dataclasses_json.core.Json]:
         if account_id:
-            self.account_id: Optional[str] = account_id
+            self.account_id: str | None = account_id
         todict = ModelToDictPostprocessor(method_calls_slice)
         return todict.postprocess(super().to_dict(*args, **kwargs))

@@ -1,6 +1,5 @@
 import functools
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import CatchAll, Undefined, config, dataclass_json
 
@@ -49,12 +48,12 @@ class SessionCapabilitiesCore(Model):
 
 @dataclass
 class SessionPrimaryAccount(Model):
-    core: Optional[str] = field(
+    core: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_CORE), default=None
     )
-    mail: Optional[str] = field(
+    mail: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_MAIL), default=None
     )
-    submission: Optional[str] = field(
+    submission: str | None = field(
         metadata=config(field_name=constants.JMAP_URN_SUBMISSION), default=None
     )

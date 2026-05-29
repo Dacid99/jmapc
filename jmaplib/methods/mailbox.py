@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import config
 
@@ -22,7 +21,7 @@ from .base import (
 
 
 class MailboxBase:
-    method_namespace: Optional[str] = "Mailbox"
+    method_namespace: str | None = "Mailbox"
     using = {constants.JMAP_URN_MAIL}
 
 
@@ -48,7 +47,7 @@ class MailboxGetResponse(MailboxBase, GetResponse):
 
 @dataclass
 class MailboxQuery(MailboxBase, Query):
-    filter: Optional[MailboxQueryFilter] = None
+    filter: MailboxQueryFilter | None = None
     sort_as_tree: bool = False
     filter_as_tree: bool = False
 
@@ -60,7 +59,7 @@ class MailboxQueryResponse(MailboxBase, QueryResponse):
 
 @dataclass
 class MailboxQueryChanges(MailboxBase, QueryChanges):
-    filter: Optional[MailboxQueryFilter] = None
+    filter: MailboxQueryFilter | None = None
 
 
 @dataclass
@@ -70,11 +69,11 @@ class MailboxQueryChangesResponse(MailboxBase, QueryChangesResponse):
 
 @dataclass
 class MailboxSet(MailboxBase, Set):
-    create: Optional[dict[str, Mailbox]] = None
+    create: dict[str, Mailbox] | None = None
     on_destroy_remove_emails: bool = False
 
 
 @dataclass
 class MailboxSetResponse(MailboxBase, SetResponse):
-    created: Optional[dict[str, Optional[Mailbox]]]
-    updated: Optional[dict[str, Optional[Mailbox]]]
+    created: dict[str, Mailbox | None] | None
+    updated: dict[str, Mailbox | None] | None

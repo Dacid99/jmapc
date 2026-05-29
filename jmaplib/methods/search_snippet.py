@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from dataclasses_json import config
 
@@ -11,16 +10,16 @@ from .base import Get, GetResponseWithoutState
 
 
 class SearchSnippetBase:
-    method_namespace: Optional[str] = "SearchSnippet"
+    method_namespace: str | None = "SearchSnippet"
     using = {constants.JMAP_URN_MAIL}
 
 
 @dataclass
 class SearchSnippetGet(SearchSnippetBase, Get):
-    ids: Optional[ListOrRef[str]] = field(
+    ids: ListOrRef[str] | None = field(
         metadata=config(field_name="emailIds"), default=None
     )
-    filter: Optional[TypeOrRef[EmailQueryFilter]] = None
+    filter: TypeOrRef[EmailQueryFilter] | None = None
 
 
 @dataclass
