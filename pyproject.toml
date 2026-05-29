@@ -127,19 +127,4 @@ help = "Clean documentation build directory"
 sequence = ["lint", "pytest"]
 help = "Run all tests"
 
-[tool.coverage.run]
-source = ["jmaplib"]
-
-[tool.coverage.report]
-show_missing = true
-
-[tool.pytest.ini_options]
-addopts = """\
-    --cov \
-    --cov-append \
-    --cov-report term \
-    --cov-report xml:.pytest_coverage.xml \
-    --junitxml=.pytest_results.xml \
-"""
-
 # vim: ft=cfg

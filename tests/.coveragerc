@@ -1,0 +1,27 @@
+[run]
+source=jmaplib/
+omit =
+    */scripts/*
+    */test/*
+    */tools/*
+    */docs/*
+    */.venv/*
+    */venv/*
+    */test.py
+branch=True
+[report]
+format=total
+exclude_also =
+    if TYPE_CHECKING
+    @overload
+include_namespace_packages=True
+precision=2
+show_missing=True
+sort=Cover
+[html]
+directory = tests/reports/cov
+show_contexts=True
+skip_empty=True
+title=Jmaplib Coverage Report
+[xml]
+output=tests/reports/cov/coverage.xml

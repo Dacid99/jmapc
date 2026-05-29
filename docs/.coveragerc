@@ -1,0 +1,33 @@
+[run]
+source=src/
+omit =
+    */migrations/*
+    */scripts/*
+    */test/*
+    */tools/*
+    */docs/*
+    */docker/*
+    */.venv/*
+    */venv/*
+    */manage.py
+    */asgi.py
+    */wsgi.py
+    */test.py
+branch=True
+[report]
+format=total
+exclude_also =
+    if TYPE_CHECKING
+    if getattr\(self, "swagger_fake_view", False\):
+    @overload
+include_namespace_packages=True
+precision=2
+show_missing=True
+sort=Cover
+[html]
+directory = test/reports/cov
+show_contexts=True
+skip_empty=True
+title=Eonvelope Coverage Report
+[xml]
+output=test/reports/cov/coverage.xml
