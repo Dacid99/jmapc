@@ -1,16 +1,14 @@
-from typing import Any
 
 import pytest
-import responses
-from jmaplib import Client, ClientError, Error, errors
-from jmaplib.methods import CoreEcho, InvocationResponseOrError
 
+from jmaplib import ClientError, errors
+from jmaplib.methods import CoreEcho, InvocationResponseOrError
 from tests.utils import expect_jmap_call
 
 
 @pytest.mark.parametrize("raise_errors", [True, False])
 @pytest.mark.parametrize(
-    ["method_response", "expected_error"],
+    ("method_response", "expected_error"),
     [
         (
             {
@@ -84,12 +82,12 @@ from tests.utils import expect_jmap_call
     ],
 )
 def test_method_error(
-    client: Client,
-    http_responses: responses.RequestsMock,
-    method_response: dict[str, Any],
-    expected_error: Error,
-    raise_errors: bool,
-) -> None:
+    client ,
+    http_responses ,
+    method_response ,
+    expected_error ,
+    raise_errors ,
+) :
     test_data = dict(param1="yes", another_param="ok")
     expected_request = {
         "methodCalls": [

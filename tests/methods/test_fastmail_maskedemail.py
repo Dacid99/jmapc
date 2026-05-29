@@ -1,7 +1,5 @@
 from datetime import datetime, timezone
 
-import responses
-from jmaplib import Client
 from jmaplib.fastmail import (
     MaskedEmail,
     MaskedEmailGet,
@@ -10,13 +8,12 @@ from jmaplib.fastmail import (
     MaskedEmailSetResponse,
     MaskedEmailState,
 )
-
 from tests.utils import expect_jmap_call
 
 
 def test_maskedemail_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -82,8 +79,8 @@ def test_maskedemail_get(
 
 
 def test_maskedemail_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [

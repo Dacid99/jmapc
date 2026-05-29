@@ -1,5 +1,5 @@
-import responses
-from jmaplib import AddedItem, Client, Mailbox, MailboxQueryFilterCondition
+
+from jmaplib import AddedItem, Mailbox, MailboxQueryFilterCondition
 from jmaplib.methods import (
     MailboxChanges,
     MailboxChangesResponse,
@@ -12,13 +12,12 @@ from jmaplib.methods import (
     MailboxSet,
     MailboxSetResponse,
 )
-
 from tests.utils import expect_jmap_call
 
 
 def test_mailbox_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -68,8 +67,8 @@ def test_mailbox_changes(
 
 
 def test_mailbox_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -151,8 +150,8 @@ def test_mailbox_get(
 
 
 def test_mailbox_query(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -205,8 +204,8 @@ def test_mailbox_query(
 
 
 def test_mailbox_query_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -272,8 +271,8 @@ def test_mailbox_query_changes(
 
 
 def test_mailbox_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [

@@ -1,13 +1,11 @@
-import responses
-from jmaplib import Client
-from jmaplib.methods import CoreEcho, CoreEchoResponse
 
+from jmaplib.methods import CoreEcho, CoreEchoResponse
 from tests.utils import expect_jmap_call
 
 
 def test_core_echo(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     test_data = dict(param1="yes", another_param="ok")
     expected_request = {
         "methodCalls": [

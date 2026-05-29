@@ -22,8 +22,7 @@ class Session(Model):
 @dataclass_json(undefined=Undefined.INCLUDE)
 @dataclass
 class SessionCapabilities(Model):
-    # dataclasses_json.CatchAll Currently does not work with
-    # from __future__ import annotations
+    # dataclasses_json.CatchAll Currently does not work with from __future__ import annotations
     core: "SessionCapabilitiesCore" = field(
         metadata=config(field_name=constants.JMAP_URN_CORE)
     )

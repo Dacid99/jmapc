@@ -44,7 +44,7 @@ class APIResponse(Model):
     session_state: str
     method_responses: list[InvocationResponseOrError] = field(
         metadata=config(
-            encoder=lambda value: None,
+            encoder=lambda _: None,
             decoder=decode_method_responses,
         ),
     )

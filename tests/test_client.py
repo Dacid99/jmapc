@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 import pytest
 import requests
@@ -14,7 +13,6 @@ from jmaplib.methods import (
     InvocationResponseOrError,
     MailboxGet,
     MailboxGetResponse,
-    Request,
 )
 from jmaplib.ref import Ref, ResultReference
 from jmaplib.session import (
@@ -32,7 +30,7 @@ echo_test_data = dict(who="Ness", goods=["Mr. Saturn coin", "Hall of Fame Bat"])
 
 @pytest.mark.parametrize(
     "test_client",
-    (
+    [
         Client.create_with_api_token(
             "jmap-example.localhost", api_token="ness__pk_fire"
         ),
@@ -45,11 +43,11 @@ echo_test_data = dict(who="Ness", goods=["Mr. Saturn coin", "Hall of Fame Bat"])
             auth=requests.auth.HTTPBasicAuth(username="ness", password="pk_fire"),
         ),
         Client("jmap-example.localhost", auth=BearerAuth("ness__pk_fire")),
-    ),
+    ],
 )
 def test_jmap_session(
-    test_client: Client, http_responses: responses.RequestsMock
-) -> None:
+    test_client , http_responses
+) :
     assert test_client.jmap_session == Session(
         username="ness@onett.example.net",
         api_url="https://jmap-api.localhost/api",
@@ -87,8 +85,8 @@ def test_jmap_session(
 
 
 def test_jmap_session_no_account(
-    http_responses_base: responses.RequestsMock,
-) -> None:
+    http_responses_base ,
+) :
     session_response = make_session_response()
     session_response["primaryAccounts"] = {}
     http_responses_base.add(
@@ -99,8 +97,8 @@ def test_jmap_session_no_account(
     client = Client.create_with_api_token(
         "jmap-example.localhost", api_token="ness__pk_fire"
     )
-    with pytest.raises(Exception) as e:
-        client.account_id
+    with pytest.raises(RuntimeError) as e:
+        client.account_id # noqa: B018 # not useless, is a property call
     assert str(e.value) == "No primary account ID found"
 
 
@@ -120,10 +118,10 @@ def test_jmap_session_no_account(
     ],
 )
 def test_jmap_session_capabilities_urns(
-    client: Client,
-    http_responses_base: responses.RequestsMock,
-    urns: set[str],
-) -> None:
+    client ,
+    http_responses_base ,
+    urns ,
+) :
     session_response = make_session_response()
     session_response["capabilities"].update({u: {} for u in urns})
     http_responses_base.add(
@@ -137,8 +135,8 @@ def test_jmap_session_capabilities_urns(
 
 
 def test_client_request_updated_session(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     new_session_response = make_session_response()
     new_session_response.update(
         {
@@ -182,23 +180,23 @@ def test_client_request_updated_session(
 @pytest.mark.parametrize(
     "method_params",
     [
-        [CoreEcho(data=echo_test_data), MailboxGet(ids=Ref("/example"))],
-        [
+        (CoreEcho(data=echo_test_data), MailboxGet(ids=Ref("/example"))),
+        (
             Invocation(method=CoreEcho(data=echo_test_data), id="0.Core/echo"),
             Invocation(method=MailboxGet(ids=Ref(path="/example")), id="1.Mailbox/get"),
-        ],
-        [
+        ),
+        (
             Invocation(method=CoreEcho(data=echo_test_data), id="0.Core/echo"),
             MailboxGet(ids=Ref("/example", method="0.Core/echo")),
-        ],
-        [
+        ),
+        (
             CoreEcho(data=echo_test_data),
             MailboxGet(
                 ids=ResultReference(
                     path="/example", result_of="0.Core/echo", name="Core/echo"
                 )
             ),
-        ],
+        ),
     ],
     ids=[
         "methods_only",
@@ -208,10 +206,10 @@ def test_client_request_updated_session(
     ],
 )
 def test_client_request(
-    client: Client,
-    http_responses: responses.RequestsMock,
-    method_params: list[Request],
-) -> None:
+    client ,
+    http_responses ,
+    method_params ,
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -270,10 +268,10 @@ def test_client_request(
     ]
 
 
-@pytest.mark.parametrize("raise_errors", [True, False])
+@pytest.mark.parametrize("raise_errors",[True, False])
 def test_client_request_single(
-    client: Client, http_responses: responses.RequestsMock, raise_errors: bool
-) -> None:
+    client , http_responses , raise_errors
+) :
     method_params = CoreEcho(data=echo_test_data)
     expected_request = {
         "methodCalls": [
@@ -303,9 +301,9 @@ def test_client_request_single(
 
 
 def test_client_request_single_with_multiple_responses(
-    client: Client,
-    http_responses: responses.RequestsMock,
-) -> None:
+    client ,
+    http_responses ,
+) :
     method_params = CoreEcho(data=echo_test_data)
     expected_request = {
         "methodCalls": [
@@ -339,9 +337,9 @@ def test_client_request_single_with_multiple_responses(
 
 
 def test_client_request_single_with_multiple_responses_error(
-    client: Client,
-    http_responses: responses.RequestsMock,
-) -> None:
+    client ,
+    http_responses ,
+) :
     method_params = CoreEcho(data=echo_test_data)
     expected_request = {
         "methodCalls": [
@@ -381,17 +379,17 @@ def test_client_request_single_with_multiple_responses_error(
     ]
 
 
-def test_client_invalid_single_response_argument(client: Client) -> None:
+def test_client_invalid_single_response_argument(client ) :
     with pytest.raises(ValueError):
         client.request(
             [CoreEcho(data=echo_test_data), MailboxGet(ids=[])],
             single_response=True,
-        )  # type: ignore
+        )
 
 
 def test_error_unauthorized(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     http_responses.add(
         method=responses.POST,
         url="https://jmap-api.localhost/api",
@@ -403,8 +401,8 @@ def test_error_unauthorized(
 
 
 def test_upload_blob(
-    client: Client, http_responses: responses.RequestsMock, tempdir: Path
-) -> None:
+    client , http_responses , tempdir
+) :
     blob_content = "test upload blob content"
     source_file = tempdir / "upload.txt"
     source_file.write_text(blob_content)
@@ -424,8 +422,8 @@ def test_upload_blob(
 
 
 def test_download_attachment(
-    client: Client, http_responses: responses.RequestsMock, tempdir: Path
-) -> None:
+    client , http_responses , tempdir
+) :
     blob_content = "test download blob content"
     http_responses.add(
         method=responses.GET,
@@ -450,8 +448,8 @@ def test_download_attachment(
 
 
 def test_download_email(
-    client: Client, http_responses: responses.RequestsMock, tempdir: Path
-) -> None:
+    client , http_responses , tempdir
+) :
     blob_content = "test download blob content"
     http_responses.add(
         method=responses.GET,

@@ -1,13 +1,12 @@
-import responses
-from jmaplib import Client, EmailQueryFilterCondition, SearchSnippet
-from jmaplib.methods import SearchSnippetGet, SearchSnippetGetResponse
 
+from jmaplib import EmailQueryFilterCondition, SearchSnippet
+from jmaplib.methods import SearchSnippetGet, SearchSnippetGetResponse
 from tests.utils import expect_jmap_call
 
 
 def test_search_snippet_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [

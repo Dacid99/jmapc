@@ -12,7 +12,7 @@ class CustomMethod(MethodWithAccount):
         self.jmap_method = ""
         self.using = set()
 
-    def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
+    def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:  # to match signature in other methods
         return self.data or {}
 
     data: dict[str, Any] | None = None
@@ -27,6 +27,6 @@ class CustomResponse(ResponseWithAccount):
             del self.data["accountId"]
 
     @classmethod
-    def from_dict(cls, kvs: Any, *args: Any, **kwargs: Any) -> CustomResponse:
+    def from_dict(cls, kvs: Any, *args: Any, **kwargs: Any) -> CustomResponse: # noqa: ARG003 # to match signature in other methods
         account_id = kvs.pop("accountId")
         return CustomResponse(account_id=account_id, data=kvs)

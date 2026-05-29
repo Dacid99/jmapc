@@ -52,14 +52,14 @@ class ModelToDictPostprocessor:
         return data
 
     def resolve_ref_target(self, ref: Ref) -> int:
-        assert self.method_calls_slice
         if isinstance(ref.method, int):
             return ref.method
-        if isinstance(ref.method, str):
-            for i, m in enumerate(self.method_calls_slice):
-                if m.id == ref.method:
-                    return i
-            raise IndexError(f'Call "{ref.method}" for reference not found')
+        if not self.method_calls_slice:
+            raise ValueError("No previous calls for reference")
+        for i, m in enumerate(self.method_calls_slice):
+            if m.id == ref.method:
+                return i
+        raise IndexError(f'Call "{ref.method}" for reference not found')
 
     def ref_to_result_reference(self, ref: Ref) -> ResultReference:
         if not self.method_calls_slice:
@@ -92,7 +92,6 @@ class ModelToDictPostprocessor:
         del data[key]
         # Remove ref sentinel key from serialized output
         new_data = data[new_key]
-        assert isinstance(new_data, dict)
         del new_data[REF_SENTINEL_KEY]
         return data
 

@@ -128,7 +128,7 @@ class Client:
             or self.jmap_session.primary_accounts.submission
         )
         if not primary_account_id:
-            raise Exception("No primary account ID found")
+            raise RuntimeError("No primary account ID found")
         return primary_account_id
 
     def upload_blob(self, file_name: str | Path) -> Blob:
@@ -199,7 +199,6 @@ class Client:
             name="",
             type="message/rfc822",
         )
-        print(blob_url)
         r = self.requests_session.get(blob_url, stream=True, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         if file_name:

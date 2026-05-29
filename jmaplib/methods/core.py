@@ -19,7 +19,7 @@ class EchoMethod:
 
 @dataclass
 class CoreEcho(CoreBase, EchoMethod, Method):
-    def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
+    def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]: # to match signature in other methods
         return self.data or {}
 
     data: dict[str, Any] | None = None
@@ -31,6 +31,6 @@ class CoreEchoResponse(CoreBase, EchoMethod, Response):
 
     @classmethod
     def from_dict(
-        cls, kvs: Any, *args: Any, **kwargs: Any
+        cls, kvs: Any, *args: Any, **kwargs: Any # noqa: ARG003 # to match signature in other methods
     ) -> CoreEchoResponse:
         return CoreEchoResponse(data=kvs)

@@ -1,9 +1,7 @@
 from datetime import datetime, timezone
 
-import responses
 from jmaplib import (
     AddedItem,
-    Client,
     Comparator,
     Email,
     EmailAddress,
@@ -26,13 +24,12 @@ from jmaplib.methods import (
     EmailSet,
     EmailSetResponse,
 )
-
 from tests.utils import expect_jmap_call
 
 
 def test_email_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -82,8 +79,8 @@ def test_email_changes(
 
 
 def test_email_copy(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -149,8 +146,8 @@ def test_email_copy(
 
 
 def test_email_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -248,8 +245,8 @@ def test_email_get(
 
 
 def test_email_query(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -320,8 +317,8 @@ def test_email_query(
 
 
 def test_email_query_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -401,8 +398,8 @@ def test_email_query_changes(
 
 
 def test_email_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     draft = Email(
         mail_from=[
             EmailAddress(name="Paula", email="paula@twoson.example.net"),

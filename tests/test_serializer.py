@@ -1,18 +1,18 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Optional
 
 import pytest
 from dataclasses_json import config
+
 from jmaplib import EmailHeader, ResultReference
 from jmaplib.models import ListOrRef
 from jmaplib.serializer import Model, datetime_decode, datetime_encode
 
 
-def test_camel_case() -> None:
+def test_camel_case() :
     @dataclass
     class TestModel(Model):
-        camel_case_key: str
+        camel_case_key:str
 
     d = TestModel(camel_case_key="fourside")
     to_dict = d.to_dict()
@@ -21,7 +21,7 @@ def test_camel_case() -> None:
     assert from_dict == d
 
 
-def test_serialize_result_reference() -> None:
+def test_serialize_result_reference() :
     @dataclass
     class TestModel(Model):
         ids: ListOrRef[str]
@@ -39,7 +39,7 @@ def test_serialize_result_reference() -> None:
     }
 
 
-def test_serialize_header() -> None:
+def test_serialize_header() :
     @dataclass
     class TestModel(Model):
         headers: list[EmailHeader]
@@ -55,7 +55,7 @@ def test_serialize_header() -> None:
     }
 
 
-def test_serialize_header_2() -> None:
+def test_serialize_header_2() :
     @dataclass
     class TestModel(Model):
         headers: list[EmailHeader]
@@ -71,10 +71,10 @@ def test_serialize_header_2() -> None:
     }
 
 
-def test_serialize_add_account_id() -> None:
+def test_serialize_add_account_id() :
     @dataclass
     class TestModel(Model):
-        account_id: Optional[str] = field(init=False)
+        account_id: str|None = field(init=False)
         data: str
 
     d = TestModel(
@@ -85,21 +85,21 @@ def test_serialize_add_account_id() -> None:
 
 
 @pytest.mark.parametrize(
-    ["dt", "expected_dict"],
+    ("dt", "expected_dict"),
     [
         (
             datetime(2022, 2, 26, 12, 31, 45, tzinfo=timezone.utc),
             dict(timestamp="2022-02-26T12:31:45Z"),
         ),
-        (None, dict()),
+        (None, {}),
     ],
 )
 def test_serialize_datetime(
-    dt: datetime, expected_dict: dict[str, Any]
-) -> None:
+    dt , expected_dict ,
+) :
     @dataclass
     class TestModel(Model):
-        timestamp: Optional[datetime] = field(
+        timestamp: datetime|None = field(
             default=None,
             metadata=config(encoder=datetime_encode, decoder=datetime_decode),
         )

@@ -1,30 +1,30 @@
-from typing import Any, Optional
+from typing import Any
 
 class SSEClient:
     def __init__(
         self,
         url: str,
-        last_id: Optional[str] = None,
+        last_id: str | None = None,
         retry: int = 3000,
-        session: Optional[Any] = None,
+        session: Any | None = None,
         chunk_size: int = 1024,
         **kwargs: Any,
     ):
-        pass
+        ...
 
     def __iter__(self) -> SSEClient:
-        pass
+        ...
 
-    def __next__(self) -> "Event":
-        pass
+    def __next__(self) -> Event:
+        ...
 
 class Event:
-    def __init__(
+    def __init__( # noqa: PYI048 # we want to type the members
         self,
         data: str = "",
         event: str = "message",
-        id: Optional[str] = None,
-        retry: Optional[str] = None,
+        id: str | None = None, # noqa: A002 # id builtin not needed here
+        retry: str | None = None,
     ):
         self.data: str
         self.event: str

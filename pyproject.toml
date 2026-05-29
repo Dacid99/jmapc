@@ -1,4 +1,5 @@
 [build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
@@ -126,5 +127,3 @@ help = "Clean documentation build directory"
 [tool.poe.tasks.test]
 sequence = ["lint", "pytest"]
 help = "Run all tests"
-
-# vim: ft=cfg

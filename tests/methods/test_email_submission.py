@@ -1,10 +1,8 @@
 from datetime import datetime, timezone
 
-import responses
 from jmaplib import (
     AddedItem,
     Address,
-    Client,
     EmailSubmission,
     EmailSubmissionQueryFilterCondition,
     Envelope,
@@ -24,7 +22,6 @@ from jmaplib.methods import (
     EmailSubmissionSet,
     EmailSubmissionSetResponse,
 )
-
 from tests.utils import expect_jmap_call
 
 expected_request_create = {
@@ -65,8 +62,8 @@ email_submission_set_response = {
 
 
 def test_email_submission_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -116,8 +113,8 @@ def test_email_submission_changes(
 
 
 def test_email_submission_get(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -172,8 +169,8 @@ def test_email_submission_get(
 
 
 def test_email_submission_query(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -228,8 +225,8 @@ def test_email_submission_query(
 
 
 def test_email_submission_query_changes(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -297,8 +294,8 @@ def test_email_submission_query_changes(
 
 
 def test_email_submission_set(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -358,8 +355,8 @@ def test_email_submission_set(
 
 
 def test_email_submission_set_on_success_destroy_email(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -451,8 +448,8 @@ def test_email_submission_set_on_success_destroy_email(
 
 
 def test_email_submission_set_on_success_update_email(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [
@@ -550,8 +547,8 @@ def test_email_submission_set_on_success_update_email(
 
 
 def test_email_submission_set_update_email_error(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     expected_request = {
         "methodCalls": [
             [

@@ -1,5 +1,5 @@
-import responses
-from jmaplib import Client, Mailbox, Ref, constants
+
+from jmaplib import Mailbox, Ref, constants
 from jmaplib.methods import (
     CustomMethod,
     CustomResponse,
@@ -7,13 +7,12 @@ from jmaplib.methods import (
     MailboxGet,
     MailboxGetResponse,
 )
-
 from tests.utils import expect_jmap_call
 
 
 def test_custom_method(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     test_data = dict(
         accountId="u1138",
         custom_value="Spiteful Crow",
@@ -48,8 +47,8 @@ def test_custom_method(
 
 
 def test_custom_method_as_result_reference_target(
-    client: Client, http_responses: responses.RequestsMock
-) -> None:
+    client , http_responses
+) :
     test_data = dict(
         accountId="u1138",
         custom_value="Spiteful Crow",
