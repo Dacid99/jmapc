@@ -13,7 +13,7 @@ class CustomMethod(MethodWithAccount):
         self.using = set()
 
     def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
-        return self.data or dict()
+        return self.data or {}
 
     data: dict[str, Any] | None = None
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from dataclasses_json import config
 
@@ -12,7 +13,7 @@ from .base import Get, GetResponseWithoutState
 
 class SearchSnippetBase:
     method_namespace: str | None = "SearchSnippet"
-    using = {constants.JMAP_URN_MAIL}
+    using: ClassVar[set[str]] = {constants.JMAP_URN_MAIL}
 
 
 @dataclass

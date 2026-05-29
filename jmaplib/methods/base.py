@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass, field
-from typing import Any, Union, cast
+from typing import Any, ClassVar, cast
 
 from jmaplib.errors import Error
 from jmaplib.models import AddedItem, Comparator, ListOrRef, SetError, StrOrRef
@@ -10,7 +10,7 @@ from jmaplib.serializer import Model
 
 
 class MethodBase(Model):
-    using: set[str] = set()
+    using: ClassVar[set[str]] = set()
     method_namespace: str | None = None
 
     @property
@@ -37,7 +37,7 @@ class MethodWithAccount(Method):
 
 
 class ResponseCollector(MethodBase):
-    response_types: dict[str, type[Error | Response]] = {}
+    response_types: ClassVar[dict[str, type[Error | Response]]] = {}
 
     @classmethod
     def __init_subclass__(cls) -> None:
@@ -209,5 +209,5 @@ class QueryChangesResponse(ResponseWithAccount, QueryChangesMethod):
     total: int | None = None
 
 
-ResponseOrError = Union[Error, Response]
-Request = Union[Method, Invocation]
+ResponseOrError = Error| Response
+Request = Method| Invocation

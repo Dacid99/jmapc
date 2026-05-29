@@ -5,7 +5,7 @@ import mimetypes
 from collections.abc import Generator, Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Literal, TypeVar, Union, cast, overload
+from typing import Any, Literal, TypeVar, cast, overload
 
 import requests
 import sseclient
@@ -26,7 +26,7 @@ from .methods import (
 from .models import Blob, Email, EmailBodyPart, Event
 from .session import Session
 
-RequestsAuth = Union[requests.auth.AuthBase, tuple[str, str]]
+RequestsAuth = requests.auth.AuthBase|tuple[str, str]
 ClientType = TypeVar("ClientType", bound="Client")
 
 REQUEST_TIMEOUT = 30
@@ -132,7 +132,7 @@ class Client:
         return primary_account_id
 
     def upload_blob(self, file_name: str | Path) -> Blob:
-        mime_type, mime_encoding = mimetypes.guess_type(file_name)
+        mime_type, _ = mimetypes.guess_type(file_name)
         upload_url = self.jmap_session.upload_url.format(accountId=self.account_id)
         with open(file_name, "rb") as f:
             r = self.requests_session.post(

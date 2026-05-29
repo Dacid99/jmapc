@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from dataclasses_json import config
 
@@ -12,7 +13,7 @@ from .base import Changes, ChangesResponse, Get, GetResponse, Set, SetResponse
 
 class IdentityBase:
     method_namespace: str | None = "Identity"
-    using = {constants.JMAP_URN_SUBMISSION}
+    using: ClassVar[set[str]] = {constants.JMAP_URN_SUBMISSION}
 
 
 @dataclass

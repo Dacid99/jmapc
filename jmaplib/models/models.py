@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import TypeVar, Union
+from typing import TypeVar
 
 from dataclasses_json import config
 
@@ -10,9 +10,9 @@ from jmaplib.ref import Ref, ResultReference
 from jmaplib.serializer import Model
 
 T = TypeVar("T")
-StrOrRef = Union[str, ResultReference, Ref]
-ListOrRef = Union[list[T], ResultReference, Ref]
-TypeOrRef = Union[T, ResultReference, Ref]
+StrOrRef = str| ResultReference|Ref
+ListOrRef = list[T]| ResultReference| Ref
+TypeOrRef = T| ResultReference|Ref
 
 
 @dataclass

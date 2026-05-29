@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 from .serializer import Model
 
@@ -9,7 +9,7 @@ __all__ = ["Error", "ServerFail"]
 
 
 class ErrorCollector(Model):
-    error_types: dict[str, type[Error]] = {}
+    error_types: ClassVar[dict[str, type[Error]]] = {}
 
     @classmethod
     def __init_subclass__(cls) -> None:

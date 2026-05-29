@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from dataclasses_json import config
 
@@ -28,7 +29,7 @@ from .base import (
 
 class EmailBase:
     method_namespace: str | None = "Email"
-    using = {constants.JMAP_URN_MAIL}
+    using: ClassVar[set[str]] = {constants.JMAP_URN_MAIL}
 
 
 @dataclass

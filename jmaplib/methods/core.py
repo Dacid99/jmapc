@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, ClassVar
 
 from jmaplib import constants
 
@@ -10,7 +10,7 @@ from .base import Method, Response
 
 class CoreBase:
     method_namespace: str | None = "Core"
-    using = {constants.JMAP_URN_CORE}
+    using: ClassVar[set[str]] = {constants.JMAP_URN_CORE}
 
 
 class EchoMethod:
@@ -20,7 +20,7 @@ class EchoMethod:
 @dataclass
 class CoreEcho(CoreBase, EchoMethod, Method):
     def to_dict(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
-        return self.data or dict()
+        return self.data or {}
 
     data: dict[str, Any] | None = None
 

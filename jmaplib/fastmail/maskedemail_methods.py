@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from dataclasses_json import config
 
@@ -13,7 +14,7 @@ URN = "https://www.fastmail.com/dev/maskedemail"
 
 class MaskedEmailBase:
     method_namespace: str | None = "MaskedEmail"
-    using = {URN}
+    using: ClassVar[set[str]] = {URN}
 
 
 @dataclass

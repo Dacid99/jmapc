@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Union
 
 from dataclasses_json import DataClassJsonMixin, config
 
@@ -88,6 +87,4 @@ class EmailSubmissionQueryFilterOperator(Model):
     conditions: list[EmailSubmissionQueryFilter]
 
 
-EmailSubmissionQueryFilter = Union[
-    EmailSubmissionQueryFilterCondition, EmailSubmissionQueryFilterOperator
-]
+EmailSubmissionQueryFilter =    EmailSubmissionQueryFilterCondition| EmailSubmissionQueryFilterOperator

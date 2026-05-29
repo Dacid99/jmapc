@@ -61,7 +61,7 @@ class APIRequest(Model):
     using: set[str] = field(
         init=False,
         default_factory=lambda: {constants.JMAP_URN_CORE},
-        metadata=config(encoder=lambda value: sorted(list(value))),
+        metadata=config(encoder=lambda value: sorted(value)),
     )
 
     @staticmethod
